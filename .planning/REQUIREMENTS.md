@@ -20,19 +20,19 @@ Requirements for initial release. Each maps to a roadmap phase.
 
 ### Tract Data
 
-- [ ] **TRACT-01**: `GET /api/v1/tracts` returns a GeoJSON FeatureCollection with all tracts; each Feature includes geometry and properties (tract_id, xgb_heat_score, xgb_risk_score, tf_risk_score)
-- [ ] **TRACT-02**: `GET /api/v1/tracts/{tract_id}` returns full tract detail (all tract_features columns + all 3 model scores) as typed JSON
-- [ ] **TRACT-03**: `GET /api/v1/tracts/{tract_id}/geometry` returns a lightweight GeoJSON Feature with geometry only (no feature vector)
+- [x] **TRACT-01**: `GET /api/v1/tracts` returns a GeoJSON FeatureCollection with all tracts; each Feature includes geometry and properties (tract_id, xgb_heat_score, xgb_risk_score, tf_risk_score)
+- [x] **TRACT-02**: `GET /api/v1/tracts/{tract_id}` returns full tract detail (all tract_features columns + all 3 model scores) as typed JSON
+- [x] **TRACT-03**: `GET /api/v1/tracts/{tract_id}/geometry` returns a lightweight GeoJSON Feature with geometry only (no feature vector)
 
 ### Block Data
 
-- [ ] **BLOCK-01**: `GET /api/v1/blocks` with required `?tract_id=` query param returns a GeoJSON FeatureCollection of blocks within that tract
-- [ ] **BLOCK-02**: `GET /api/v1/blocks/{block_id}` returns single block detail as typed JSON
+- [x] **BLOCK-01**: `GET /api/v1/blocks` with required `?tract_id=` query param returns a GeoJSON FeatureCollection of blocks within that tract
+- [x] **BLOCK-02**: `GET /api/v1/blocks/{block_id}` returns single block detail as typed JSON
 
 ### Predictions
 
-- [ ] **PRED-01**: `GET /api/v1/predictions/tracts` returns all tract IDs with their 3 pre-scored model values (no geometry) for frontend choropleth coloring
-- [ ] **PRED-02**: `GET /api/v1/predictions/tracts/ranked` accepts `?sort_by=`, `?order=desc|asc`, `?limit=N` params and returns tracts sorted by the chosen score
+- [x] **PRED-01**: `GET /api/v1/predictions/tracts` returns all tract IDs with their 3 pre-scored model values (no geometry) for frontend choropleth coloring
+- [x] **PRED-02**: `GET /api/v1/predictions/tracts/ranked` accepts `?sort_by=`, `?order=desc|asc`, `?limit=N` params and returns tracts sorted by the chosen score
 
 ### Simulations
 
@@ -45,11 +45,11 @@ Requirements for initial release. Each maps to a roadmap phase.
 
 ### Summary
 
-- [ ] **SUM-01**: `GET /api/v1/summary/county` returns county-wide aggregate stats: `{tract_count, mean_heat_score, p75_heat_score, high_risk_tract_count}`
+- [x] **SUM-01**: `GET /api/v1/summary/county` returns county-wide aggregate stats: `{tract_count, mean_heat_score, p75_heat_score, high_risk_tract_count}`
 
 ### Batch
 
-- [ ] **BATCH-01**: `POST /api/v1/tracts/batch` accepts `{tract_ids: [...]}` and returns full tract detail for each ID in a single round trip
+- [x] **BATCH-01**: `POST /api/v1/tracts/batch` accepts `{tract_ids: [...]}` and returns full tract detail for each ID in a single round trip
 
 ## v2 Requirements
 
@@ -99,15 +99,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-06 | Phase 1: Foundation | Complete (01-01) |
 | INFRA-07 | Phase 1: Foundation | Complete (01-01) |
 | INFRA-08 | Phase 1: Foundation | Complete |
-| TRACT-01 | Phase 2: Data Endpoints | Pending |
-| TRACT-02 | Phase 2: Data Endpoints | Pending |
-| TRACT-03 | Phase 2: Data Endpoints | Pending |
-| BLOCK-01 | Phase 2: Data Endpoints | Pending |
-| BLOCK-02 | Phase 2: Data Endpoints | Pending |
-| PRED-01 | Phase 2: Data Endpoints | Pending |
-| PRED-02 | Phase 2: Data Endpoints | Pending |
-| SUM-01 | Phase 2: Data Endpoints | Pending |
-| BATCH-01 | Phase 2: Data Endpoints | Pending |
+| TRACT-01 | Phase 2: Data Endpoints | Complete |
+| TRACT-02 | Phase 2: Data Endpoints | Complete |
+| TRACT-03 | Phase 2: Data Endpoints | Complete |
+| BLOCK-01 | Phase 2: Data Endpoints | Complete |
+| BLOCK-02 | Phase 2: Data Endpoints | Complete |
+| PRED-01 | Phase 2: Data Endpoints | Complete |
+| PRED-02 | Phase 2: Data Endpoints | Complete |
+| SUM-01 | Phase 2: Data Endpoints | Complete |
+| BATCH-01 | Phase 2: Data Endpoints | Complete |
 | SIM-01 | Phase 3: Simulation Engine | Pending |
 | SIM-02 | Phase 3: Simulation Engine | Pending |
 | CHAT-01 | Phase 4: Chat Endpoint | Pending |
