@@ -91,26 +91,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
-| INFRA-07 | Phase 1 | Pending |
-| INFRA-08 | Phase 1 | Pending |
-| TRACT-01 | Phase 2 | Pending |
-| TRACT-02 | Phase 2 | Pending |
-| TRACT-03 | Phase 2 | Pending |
-| BLOCK-01 | Phase 2 | Pending |
-| BLOCK-02 | Phase 2 | Pending |
-| PRED-01 | Phase 2 | Pending |
-| PRED-02 | Phase 2 | Pending |
-| SIM-01 | Phase 3 | Pending |
-| SIM-02 | Phase 3 | Pending |
-| SUM-01 | Phase 2 | Pending |
-| BATCH-01 | Phase 2 | Pending |
-| CHAT-01 | Phase 4 | Pending |
+| INFRA-01 | Phase 1: Foundation | Pending |
+| INFRA-02 | Phase 1: Foundation | Pending |
+| INFRA-03 | Phase 1: Foundation | Pending |
+| INFRA-04 | Phase 1: Foundation | Pending |
+| INFRA-05 | Phase 1: Foundation | Pending |
+| INFRA-06 | Phase 1: Foundation | Pending |
+| INFRA-07 | Phase 1: Foundation | Pending |
+| INFRA-08 | Phase 1: Foundation | Pending |
+| TRACT-01 | Phase 2: Data Endpoints | Pending |
+| TRACT-02 | Phase 2: Data Endpoints | Pending |
+| TRACT-03 | Phase 2: Data Endpoints | Pending |
+| BLOCK-01 | Phase 2: Data Endpoints | Pending |
+| BLOCK-02 | Phase 2: Data Endpoints | Pending |
+| PRED-01 | Phase 2: Data Endpoints | Pending |
+| PRED-02 | Phase 2: Data Endpoints | Pending |
+| SUM-01 | Phase 2: Data Endpoints | Pending |
+| BATCH-01 | Phase 2: Data Endpoints | Pending |
+| SIM-01 | Phase 3: Simulation Engine | Pending |
+| SIM-02 | Phase 3: Simulation Engine | Pending |
+| CHAT-01 | Phase 4: Chat Endpoint | Pending |
 
 **Coverage:**
 - v1 requirements: 20 total
@@ -119,4 +119,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-28*
-*Last updated: 2026-02-28 after initial definition*
+*Last updated: 2026-02-28 after roadmap creation*
