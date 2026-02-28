@@ -1,0 +1,7 @@
+# Data pipeline dependencies — offline use only
+# These are NOT imported by the FastAPI application.
+# Install in same conda env: pip install -r scripts/requirements-pipeline.txt
+
+pygris>=0.1.7
+geopandas>=0.14
+shapely>=2.0
