@@ -29,7 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. DuckDB connection to `king_county.duckdb` is open in read-only mode and reachable via FastAPI dependency injection
   4. Any endpoint that receives a malformed request returns `{error, detail, status_code}` JSON (not an HTML traceback or untyped 500)
   5. The OpenAPI docs UI at `/docs` renders all registered routes
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold layer: requirements.txt, .env.example, app/config.py, app/models/loader.py, app/dependencies.py
+- [ ] 01-02-PLAN.md — App wiring: app/main.py (lifespan, CORS, exception handlers, router), app/routers/health.py, app/schemas/health.py, smoke tests
 
 ### Phase 2: Data Endpoints
 **Goal**: City planners (via the React frontend) can retrieve all tract and block geometries, pre-scored model predictions, county-wide summary stats, and batch tract details from a single running API
@@ -70,7 +74,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/2 | Not started | - |
 | 2. Data Endpoints | 0/TBD | Not started | - |
 | 3. Simulation Engine | 0/TBD | Not started | - |
 | 4. Chat Endpoint | 0/TBD | Not started | - |
