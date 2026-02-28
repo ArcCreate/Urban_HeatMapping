@@ -125,3 +125,12 @@ None — no external service configuration required.
 ---
 *Phase: 02-data-endpoints*
 *Completed: 2026-02-28*
+
+## Self-Check: PASSED
+
+- FOUND: app/services/blocks.py
+- FOUND: app/routers/blocks.py
+- FOUND: tests/test_blocks.py
+- FOUND: .planning/phases/02-data-endpoints/02-04-SUMMARY.md
+- FOUND commit: e2f4346 (block service and router)
+- FOUND commit: 186b14c (pytest tests)
