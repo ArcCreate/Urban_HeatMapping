@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T23:21:25.883Z"
+last_updated: "2026-02-28T23:21:53.948Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 7
-  completed_plans: 6
+  completed_plans: 7
 ---
 
 # Project State
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 2 of 4 (Data Endpoints) — IN PROGRESS
-Plan: 4 of 5 in current phase — COMPLETE
-Status: Phase 2 plan 04 complete — Block service, router, and tests (BLOCK-01, BLOCK-02)
-Last activity: 2026-02-28 — Completed 02-04: app/services/blocks.py, app/routers/blocks.py, tests/test_blocks.py (11 tests passing)
+Phase: 2 of 4 (Data Endpoints) — COMPLETE
+Plan: 5 of 5 in current phase — COMPLETE
+Status: Phase 2 all plans complete — prediction/summary endpoints (PRED-01, PRED-02, SUM-01)
+Last activity: 2026-02-28 — Completed 02-05: prediction service, summary service, routers, 21 tests passing
 
-Progress: [█████░░░░░] 50%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Progress: [█████░░░░░] 50%
 | Phase 02-data-endpoints P02 | 5 | 2 tasks | 6 files |
 | Phase 02-data-endpoints P04 | 2 | 2 tasks | 3 files |
 | Phase 02-data-endpoints P03 | 3 | 2 tasks | 5 files |
+| Phase 02-data-endpoints P05 | 8 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,8 @@ Recent decisions affecting current work:
 - [Phase 02-data-endpoints]: test_blocks.py self-registers blocks router into app if not already wired — allows tests to pass before Plan 02-05 wires main.py (idempotent)
 - [Phase 02-data-endpoints]: db.cursor() per service function + json.loads(ST_AsGeoJSON()) for thread-safe DuckDB spatial queries in tract endpoints
 - [Phase 02-data-endpoints]: validation_exception_handler _safe_errors() helper: Pydantic v2 exc.errors() ctx contains ValueError objects — stringify ctx values to prevent JSONResponse TypeError
+- [Phase 02-data-endpoints]: sort_by/order query params use SortColumn/SortOrder enums — .value safe to interpolate into SQL because it comes from validated Enum allowlist
+- [Phase 02-data-endpoints]: High-risk tract threshold: xgb_heat_score > 0.75 per Phase 2 research spec; used in COUNT FILTER in summary query
 
 ### Pending Todos
 
@@ -95,5 +98,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-03-PLAN.md — Tract service (get_all_tracts, get_tract_detail, get_tract_geometry, get_batch_tracts), router (4 routes with static batch path before dynamic /{tract_id}), 17 pytest tests; TRACT-01 through BATCH-01 complete
+Stopped at: Completed 02-05-PLAN.md — prediction and summary endpoints (PRED-01, PRED-02, SUM-01); all Phase 2 plans complete
 Resume file: None
