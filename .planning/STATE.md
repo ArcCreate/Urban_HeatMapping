@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T23:14:44.294Z"
+last_updated: "2026-02-28T23:18:30Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 2 of 4 (Data Endpoints) — IN PROGRESS
-Plan: 2 of 5 in current phase — COMPLETE
-Status: Phase 2 plan 02 complete — Pydantic schemas and shared test fixture created
-Last activity: 2026-02-28 — Completed 02-02: Pydantic schemas (tracts/blocks/predictions/summary), test_db fixture, geojson-pydantic added
+Plan: 4 of 5 in current phase — COMPLETE
+Status: Phase 2 plan 04 complete — Block service, router, and tests (BLOCK-01, BLOCK-02)
+Last activity: 2026-02-28 — Completed 02-04: app/services/blocks.py, app/routers/blocks.py, tests/test_blocks.py (11 tests passing)
 
-Progress: [████░░░░░░] 40%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
@@ -44,11 +44,12 @@ Progress: [████░░░░░░] 40%
 | 2. Data Endpoints | 2 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (6 min), 01-02 (2 min), 02-01 (3 min), 02-02 (5 min)
+- Last 5 plans: 01-01 (6 min), 01-02 (2 min), 02-01 (3 min), 02-02 (5 min), 02-04 (2 min)
 - Trend: consistent
 
 *Updated after each plan completion*
 | Phase 02-data-endpoints P02 | 5 | 2 tasks | 6 files |
+| Phase 02-data-endpoints P04 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Recent decisions affecting current work:
 - [Phase 02-data-endpoints]: BatchRequest validates non-empty list and enforces max 200 items — prevents unbounded queries at the schema layer
 - [Phase 02-data-endpoints]: SortColumn/SortOrder as str Enum types for FastAPI query parameter validation — prevents SQL injection, returns 422 on bad values
 - [Phase 02-data-endpoints]: test_db fixture uses INSTALL/LOAD spatial in-memory DuckDB to mirror production spatial extension behavior without king_county.duckdb file dependency
+- [Phase 02-data-endpoints]: tract_id is a required Query(...) param on GET /blocks — FastAPI returns 422 on miss, preventing 25,552-row unfiltered query (~50MB+)
+- [Phase 02-data-endpoints]: get_block_detail excludes geometry — BLOCK-02 is typed JSON detail only; geometry lives in the list endpoint filtered by tract_id
+- [Phase 02-data-endpoints]: test_blocks.py self-registers blocks router into app if not already wired — allows tests to pass before Plan 02-05 wires main.py (idempotent)
 
 ### Pending Todos
 
@@ -88,5 +92,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-02-PLAN.md — Pydantic schemas (tracts/blocks/predictions/summary) and test_db fixture; Phase 2 plan 2 of 5 complete
+Stopped at: Completed 02-04-PLAN.md — Block service (get_blocks_by_tract, get_block_detail), router (GET /blocks, GET /blocks/{block_id}), and 11 pytest tests; Phase 2 plan 4 of 5 complete
 Resume file: None

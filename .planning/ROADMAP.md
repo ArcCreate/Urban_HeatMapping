@@ -82,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-02-28 |
-| 2. Data Endpoints | 2/5 | In Progress|  |
+| 2. Data Endpoints | 3/5 | In Progress|  |
 | 3. Simulation Engine | 0/TBD | Not started | - |
 | 4. Chat Endpoint | 0/TBD | Not started | - |
