@@ -1,3 +1,6 @@
+# Requires Python 3.12 — TensorFlow 2.20 segfaults on Python 3.13 (arm64)
+# Use: conda create -n urban-heatmap python=3.12 && conda activate urban-heatmap && pip install -r requirements.txt
+
 # Web framework — includes uvicorn[standard] and httpx
 fastapi[standard]==0.134.0
 
