@@ -13,8 +13,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import settings
 from app.models.loader import load_models
-from app.routers import health
-from app.routers import tracts
+from app.routers import health, tracts, predictions, summary
 
 logger = logging.getLogger(__name__)
 
@@ -115,9 +114,10 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 # --- Routers (INFRA-01: all under /api/v1/ prefix) ---
 app.include_router(health.router, prefix="/api/v1")
 app.include_router(tracts.router, prefix="/api/v1")
-# Future phases add (Plan 02-05 is the canonical Wave 3 main.py writer):
+app.include_router(predictions.router, prefix="/api/v1")
+app.include_router(summary.router, prefix="/api/v1")
+# Plan 02-04 (blocks) wired here when blocks.py is available:
 # app.include_router(blocks.router, prefix="/api/v1")
-# app.include_router(predictions.router, prefix="/api/v1")
-# app.include_router(summary.router, prefix="/api/v1")
+# Future phases add:
 # app.include_router(simulate.router, prefix="/api/v1")
 # app.include_router(chat.router, prefix="/api/v1")
