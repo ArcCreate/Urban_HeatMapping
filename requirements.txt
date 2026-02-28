@@ -1,0 +1,20 @@
+# Web framework — includes uvicorn[standard] and httpx
+fastapi[standard]==0.134.0
+
+# Database
+duckdb>=1.2.0,<2.0
+
+# ML models
+xgboost>=2.0,<3.0
+tensorflow>=2.15,<3.0
+
+# LLM client
+anthropic==0.84.0
+
+# Config
+pydantic-settings>=2.0,<3.0
+
+# Dev/test
+pytest>=8.0
+httpx>=0.28
+pytest-asyncio>=0.24
