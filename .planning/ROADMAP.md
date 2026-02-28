@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold layer: requirements.txt, .env.example, app/config.py, app/models/loader.py, app/dependencies.py
+- [x] 01-01-PLAN.md — Scaffold layer: requirements.txt, .env.example, app/config.py, app/models/loader.py, app/dependencies.py
 - [ ] 01-02-PLAN.md — App wiring: app/main.py (lifespan, CORS, exception handlers, router), app/routers/health.py, app/schemas/health.py, smoke tests
 
 ### Phase 2: Data Endpoints
@@ -74,7 +74,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/2 | Not started | - |
+| 1. Foundation | 1/2 | In progress | - |
 | 2. Data Endpoints | 0/TBD | Not started | - |
 | 3. Simulation Engine | 0/TBD | Not started | - |
 | 4. Chat Endpoint | 0/TBD | Not started | - |

@@ -13,9 +13,9 @@ Requirements for initial release. Each maps to a roadmap phase.
 - [ ] **INFRA-02**: CORS is configured to allow all origins (internal use, dev frontend at localhost)
 - [ ] **INFRA-03**: `GET /api/v1/health` returns `{status, models_loaded, db_connected}` as a liveness check
 - [ ] **INFRA-04**: OpenAPI/Swagger UI is available at `/docs` (FastAPI default, not disabled)
-- [ ] **INFRA-05**: XGBoost heat model, XGBoost risk model, and TensorFlow risk model load at startup via lifespan context manager without blocking the event loop
-- [ ] **INFRA-06**: DuckDB connection to `king_county.duckdb` is established at startup with `read_only=True` and accessible via dependency injection
-- [ ] **INFRA-07**: Anthropic client is initialized at startup and reused across chat requests
+- [x] **INFRA-05**: XGBoost heat model, XGBoost risk model, and TensorFlow risk model load at startup via lifespan context manager without blocking the event loop
+- [x] **INFRA-06**: DuckDB connection to `king_county.duckdb` is established at startup with `read_only=True` and accessible via dependency injection
+- [x] **INFRA-07**: Anthropic client is initialized at startup and reused across chat requests
 - [ ] **INFRA-08**: All error responses return consistent JSON shape `{error, detail, status_code}`
 
 ### Tract Data
@@ -95,9 +95,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-02 | Phase 1: Foundation | Pending |
 | INFRA-03 | Phase 1: Foundation | Pending |
 | INFRA-04 | Phase 1: Foundation | Pending |
-| INFRA-05 | Phase 1: Foundation | Pending |
-| INFRA-06 | Phase 1: Foundation | Pending |
-| INFRA-07 | Phase 1: Foundation | Pending |
+| INFRA-05 | Phase 1: Foundation | Complete (01-01) |
+| INFRA-06 | Phase 1: Foundation | Complete (01-01) |
+| INFRA-07 | Phase 1: Foundation | Complete (01-01) |
 | INFRA-08 | Phase 1: Foundation | Pending |
 | TRACT-01 | Phase 2: Data Endpoints | Pending |
 | TRACT-02 | Phase 2: Data Endpoints | Pending |
