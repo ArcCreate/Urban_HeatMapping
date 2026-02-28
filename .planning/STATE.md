@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T23:05:28Z"
+last_updated: "2026-02-28T23:14:44.294Z"
 progress:
-  total_phases: 4
+  total_phases: 2
   completed_phases: 1
   total_plans: 7
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,16 +23,16 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 2 of 4 (Data Endpoints) — IN PROGRESS
-Plan: 1 of 5 in current phase — COMPLETE
-Status: Phase 2 plan 01 complete — king_county.duckdb built and validated
-Last activity: 2026-02-28 — Completed 02-01: DuckDB build pipeline (build_duckdb.py, tract_features/blocks/tract_outputs_with_preds)
+Plan: 2 of 5 in current phase — COMPLETE
+Status: Phase 2 plan 02 complete — Pydantic schemas and shared test fixture created
+Last activity: 2026-02-28 — Completed 02-02: Pydantic schemas (tracts/blocks/predictions/summary), test_db fixture, geojson-pydantic added
 
-Progress: [███░░░░░░░] 30%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
+- Total plans completed: 4
 - Average duration: 4 min
 - Total execution time: 0.2 hours
 
@@ -41,13 +41,14 @@ Progress: [███░░░░░░░] 30%
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Foundation | 2 | 8 min | 4 min |
-| 2. Data Endpoints | 1 | 3 min | 3 min |
+| 2. Data Endpoints | 2 | 8 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (6 min), 01-02 (2 min), 02-01 (3 min)
+- Last 5 plans: 01-01 (6 min), 01-02 (2 min), 02-01 (3 min), 02-02 (5 min)
 - Trend: consistent
 
 *Updated after each plan completion*
+| Phase 02-data-endpoints P02 | 5 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,9 @@ Recent decisions affecting current work:
 - [Phase 02-data-endpoints]: WKT stored as VARCHAR in geometry_wkt column, converted via ST_GeomFromText() at query time rather than using DuckDB native GEOMETRY type
 - [Phase 02-data-endpoints]: All 492 tract GEOIDs and all 25,552 block GEOID20s matched exactly between pygris output and CSV data — no padding/format issues
 - [Phase 02-data-endpoints]: Use /opt/anaconda3/envs/urban-heatmap/bin/pip directly (not conda run pip) to ensure deps install into Python 3.12 env, not system Python 3.13
+- [Phase 02-data-endpoints]: BatchRequest validates non-empty list and enforces max 200 items — prevents unbounded queries at the schema layer
+- [Phase 02-data-endpoints]: SortColumn/SortOrder as str Enum types for FastAPI query parameter validation — prevents SQL injection, returns 422 on bad values
+- [Phase 02-data-endpoints]: test_db fixture uses INSTALL/LOAD spatial in-memory DuckDB to mirror production spatial extension behavior without king_county.duckdb file dependency
 
 ### Pending Todos
 
@@ -84,5 +88,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-01-PLAN.md — DuckDB build pipeline (build_duckdb.py produces king_county.duckdb with tract_features 492 rows, blocks 25,552 rows, tract_outputs_with_preds 492 rows); Phase 2 plan 1 of 5 complete
+Stopped at: Completed 02-02-PLAN.md — Pydantic schemas (tracts/blocks/predictions/summary) and test_db fixture; Phase 2 plan 2 of 5 complete
 Resume file: None
