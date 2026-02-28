@@ -37,7 +37,7 @@ htmlcov/
 
 # Data files (large; managed out of band)
 *.duckdb
-models/
+/models/
 
 # Logs
 *.log
