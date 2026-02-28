@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [x] 01-01-PLAN.md — Scaffold layer: requirements.txt, .env.example, app/config.py, app/models/loader.py, app/dependencies.py
-- [ ] 01-02-PLAN.md — App wiring: app/main.py (lifespan, CORS, exception handlers, router), app/routers/health.py, app/schemas/health.py, smoke tests
+- [x] 01-02-PLAN.md — App wiring: app/main.py (lifespan, CORS, exception handlers, router), app/routers/health.py, app/schemas/health.py, smoke tests
 
 ### Phase 2: Data Endpoints
 **Goal**: City planners (via the React frontend) can retrieve all tract and block geometries, pre-scored model predictions, county-wide summary stats, and batch tract details from a single running API
@@ -45,7 +45,14 @@ Plans:
   3. `GET /api/v1/blocks?tract_id={id}` returns a GeoJSON FeatureCollection of blocks scoped to that tract
   4. `GET /api/v1/predictions/tracts/ranked?sort_by=xgb_heat_score&order=desc&limit=10` returns the 10 highest-heat tracts without geometry
   5. `GET /api/v1/summary/county` returns `{tract_count, mean_heat_score, p75_heat_score, high_risk_tract_count}` as aggregate stats
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — DuckDB build pipeline: scripts/build_duckdb.py creates king_county.duckdb from CSVs + TIGER geometry
+- [ ] 02-02-PLAN.md — Interface contracts: all Pydantic schemas + shared pytest fixture (geojson-pydantic added to requirements.txt)
+- [ ] 02-03-PLAN.md — Tract endpoints: GET /tracts, /tracts/{id}, /tracts/{id}/geometry, POST /tracts/batch (TRACT-01, TRACT-02, TRACT-03, BATCH-01)
+- [ ] 02-04-PLAN.md — Block endpoints: GET /blocks?tract_id=, /blocks/{block_id} (BLOCK-01, BLOCK-02)
+- [ ] 02-05-PLAN.md — Prediction, summary endpoints: GET /predictions/tracts, /predictions/tracts/ranked, /summary/county (PRED-01, PRED-02, SUM-01)
 
 ### Phase 3: Simulation Engine
 **Goal**: Planners can submit one or two cooling intervention scenarios for a set of tracts and receive quantified delta heat and risk scores that reflect the parametric formula logic
@@ -75,6 +82,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-02-28 |
-| 2. Data Endpoints | 0/TBD | Not started | - |
+| 2. Data Endpoints | 0/5 | Not started | - |
 | 3. Simulation Engine | 0/TBD | Not started | - |
 | 4. Chat Endpoint | 0/TBD | Not started | - |
