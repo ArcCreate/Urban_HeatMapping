@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T23:18:30Z"
+last_updated: "2026-02-28T23:21:25.883Z"
 progress:
   total_phases: 2
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -50,6 +50,7 @@ Progress: [█████░░░░░] 50%
 *Updated after each plan completion*
 | Phase 02-data-endpoints P02 | 5 | 2 tasks | 6 files |
 | Phase 02-data-endpoints P04 | 2 | 2 tasks | 3 files |
+| Phase 02-data-endpoints P03 | 3 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 02-data-endpoints]: tract_id is a required Query(...) param on GET /blocks — FastAPI returns 422 on miss, preventing 25,552-row unfiltered query (~50MB+)
 - [Phase 02-data-endpoints]: get_block_detail excludes geometry — BLOCK-02 is typed JSON detail only; geometry lives in the list endpoint filtered by tract_id
 - [Phase 02-data-endpoints]: test_blocks.py self-registers blocks router into app if not already wired — allows tests to pass before Plan 02-05 wires main.py (idempotent)
+- [Phase 02-data-endpoints]: db.cursor() per service function + json.loads(ST_AsGeoJSON()) for thread-safe DuckDB spatial queries in tract endpoints
+- [Phase 02-data-endpoints]: validation_exception_handler _safe_errors() helper: Pydantic v2 exc.errors() ctx contains ValueError objects — stringify ctx values to prevent JSONResponse TypeError
 
 ### Pending Todos
 
@@ -92,5 +95,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-02-28
-Stopped at: Completed 02-04-PLAN.md — Block service (get_blocks_by_tract, get_block_detail), router (GET /blocks, GET /blocks/{block_id}), and 11 pytest tests; Phase 2 plan 4 of 5 complete
+Stopped at: Completed 02-03-PLAN.md — Tract service (get_all_tracts, get_tract_detail, get_tract_geometry, get_batch_tracts), router (4 routes with static batch path before dynamic /{tract_id}), 17 pytest tests; TRACT-01 through BATCH-01 complete
 Resume file: None
