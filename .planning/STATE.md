@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T04:27:41.328Z"
+last_updated: "2026-03-01T07:06:16Z"
 progress:
   total_phases: 1
   completed_phases: 1
@@ -22,12 +22,12 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-Phase: 05-heat-map-dashboard-ui — 4/4 plans complete
-Plan: 4/4 plans complete
-Status: Phase 05 complete. Dashboard UI animated and polished. All 4 plans executed.
-Last activity: 2026-03-01 — 05-04 animation polish complete (GlassCard, MapFloatingCard, TimelineSlider, Framer Motion stagger/slide-in)
+Phase: 06-composite-risk-and-projections — 1/4 plans complete
+Plan: 1/4 plans complete
+Status: Phase 06 in progress. Plan 01 complete — composite_risk scoring pipeline and API schema update done.
+Last activity: 2026-03-01 — 06-01 composite risk scoring: 492 tracts scored (min=0.2375, max=0.7546), predictions API returns composite_risk, sort_by=composite_risk enabled
 
-Progress: [██████████] 100%
+Progress: [██░░░░░░░░] 25%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [██████████] 100%
 | Phase 05-heat-map-dashboard-ui P02 | 2 | 2 tasks | 6 files |
 | Phase 05-heat-map-dashboard-ui P03 | 5 | 2 tasks | 7 files |
 | Phase 05-heat-map-dashboard-ui P04 | 2 | 2 tasks | 7 files |
+| Phase 06-composite-risk-and-projections P01 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,10 @@ Recent decisions affecting current work:
 - [Phase 05-heat-map-dashboard-ui]: Stagger variants defined at module level — stable object references prevent re-creation on each render
 - [Phase 05-heat-map-dashboard-ui]: AnimatePresence initial=false on chat list — welcome message does not animate on mount, only new messages do
 - [Phase 05-heat-map-dashboard-ui]: TractPopup motion.div wraps inner content only — react-map-gl Popup owns DOM positioning
+- [Phase 06-composite-risk-and-projections]: composite_risk formula: 4 domains — thermal 0.30, vegetation 0.25 (imperv+tree_cov equal 0.5 split), health 0.25 (CVD+diabetes+life_expectancy mean), social 0.20 (SVI+poverty+disability+under18+housing_cost mean)
+- [Phase 06-composite-risk-and-projections]: minmax() uses 1e-9 epsilon denominator — prevents division-by-zero when all values in a column are identical
+- [Phase 06-composite-risk-and-projections]: Idempotent ALTER TABLE via try/except (not IF NOT EXISTS) — broader DuckDB version compatibility
+- [Phase 06-composite-risk-and-projections]: life_expectancy inverted in health domain (higher = better health); CVD rate and diabetes rate not inverted (higher = worse risk already)
 
 ### Roadmap Evolution
 
@@ -128,5 +133,5 @@ None — all v1.0 blockers resolved. See PROJECT.md Known Issues for tech debt i
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 05-04-PLAN.md — animation polish and glassmorphism floating UI complete.
-Resume file: None — Phase 05 complete.
+Stopped at: Completed 06-01-PLAN.md — composite risk scoring pipeline and predictions API update complete.
+Resume file: .planning/phases/06-composite-risk-and-projections/06-02-PLAN.md
