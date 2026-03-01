@@ -47,6 +47,7 @@ export function HeatMap() {
     setPopupInfo, setSelectedTractId,
     setTractDetail, setTractDetailLoading,
     tractDetail, colorStops, projectionYear,
+    selectedTractId,
   } = useMapStore(
     useShallow((s) => ({
       geojsonData: s.geojsonData,
@@ -59,6 +60,7 @@ export function HeatMap() {
       tractDetail: s.tractDetail,
       colorStops: s.colorStops,
       projectionYear: s.projectionYear,
+      selectedTractId: s.selectedTractId,
     }))
   )
 
@@ -182,16 +184,45 @@ export function HeatMap() {
         {geojsonData && (
           <Source id="tracts" type="geojson" data={geojsonData} generateId={true}>
             <Layer {...tractFillLayer} />
-            <Layer {...tractOutlineLayer} />
-            {/* City boundary highlight — glows the outer edge of all tracts in the selected city */}
+
+            {/* City group: subtle fill tint over all tracts in the selected city */}
             <Layer
-              id="city-highlight"
+              id="city-fill"
+              type="fill"
+              filter={cityHighlightFilter}
+              paint={{
+                'fill-color': 'rgba(255, 179, 0, 0.07)',
+              }}
+            />
+
+            {/* City group: amber border around every tract in the city — reads as a city zone */}
+            <Layer
+              id="city-outline"
               type="line"
               filter={cityHighlightFilter}
               paint={{
+                'line-color': '#FFB300',
+                'line-width': 1.5,
+                'line-opacity': 0.6,
+              }}
+            />
+
+            {/* Default tract borders */}
+            <Layer {...tractOutlineLayer} />
+
+            {/* Selected tract: bright cyan outline on top of everything */}
+            <Layer
+              id="tract-selected-outline"
+              type="line"
+              filter={
+                selectedTractId
+                  ? ['==', ['get', 'tract_id'], selectedTractId]
+                  : ['==', ['literal', false], true]
+              }
+              paint={{
                 'line-color': '#00E5FF',
-                'line-width': 2.5,
-                'line-opacity': 0.75,
+                'line-width': 3,
+                'line-opacity': 1,
               }}
             />
           </Source>
