@@ -35,6 +35,7 @@ export interface RankedTract {
   xgb_heat_score: number
   xgb_risk_score: number
   tf_risk_score: number
+  composite_risk: number        // ADD — pre-computed formula score from Plan 01
   city_name: string | null
   mean_tree_cov: number | null
   mean_imperv: number | null

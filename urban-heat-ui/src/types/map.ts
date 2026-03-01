@@ -6,6 +6,8 @@ export interface PopupInfo {
   xgb_risk_score: number
   tf_risk_score: number
   display_risk: number
+  composite_risk?: number      // ADD — the formula-based baseline risk
+  projectionYear?: number      // ADD — set to the active projection year (null/undefined = baseline 2025)
 }
 
 export interface ViewState {
