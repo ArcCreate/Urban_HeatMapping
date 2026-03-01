@@ -143,6 +143,6 @@ None — all v1.0 blockers resolved. See PROJECT.md Known Issues for tech debt i
 
 ## Session Continuity
 
-Last session: 2026-03-01
-Stopped at: Completed 06-04-PLAN.md — projection timeline wired end-to-end; TimelineSlider 2025–2050 connected to store with year-keyed cache; TractPopup shows PROJ {year} label.
-Resume file: Phase 06 complete — all 4 plans executed. Run /gsd:new-milestone for v1.1.
+Last session: 2026-03-01T09:06:38Z
+Stopped at: Ad-hoc UI polish complete — Reset View button, TractPopup contractor refactor, GlassCard grey theme, STYLE.md created. All committed. Working tree clean.
+Resume file: .continue-here.md (project root) — status: complete. Next: /gsd:new-milestone for v1.2.

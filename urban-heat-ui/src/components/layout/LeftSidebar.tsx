@@ -3,7 +3,6 @@ import { Search, MapPin, ChevronRight, ArrowLeft, Layers } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useShallow } from 'zustand/shallow'
 import { useMapStore } from '../../store/mapStore'
-import { useChatStore } from '../../store/chatStore'
 import { fetchTractDetail } from '../../api/tracts'
 import { mapRef } from '../map/HeatMap'
 import type { RankedTract } from '../../types/api'
@@ -199,7 +198,6 @@ export function LeftSidebar() {
       setPopupInfo: s.setPopupInfo,
     }))
   )
-  const updateMapContext = useChatStore((s) => s.updateMapContext)
 
   // When a tract is selected (e.g. via map click), auto-navigate sidebar to its city
   useEffect(() => {
@@ -249,20 +247,10 @@ export function LeftSidebar() {
   function handleZoneClick(tract: RankedTract) {
     setSelectedTractId(tract.tract_id)
     mapRef.current?.flyTo({ center: [-122.1, 47.5], zoom: 10, duration: 1500, essential: true })
-    updateMapContext({
-      selected_tract_ids: [tract.tract_id],
-      current_scores: {
-        [tract.tract_id]: {
-          xgb_heat_score: tract.xgb_heat_score,
-          xgb_risk_score: tract.xgb_risk_score,
-          tf_risk_score: tract.tf_risk_score,
-        },
-      },
-    })
     setTractDetailLoading(true)
     setTractDetail(null)
     fetchTractDetail(tract.tract_id)
-      .then(setTractDetail)
+      .then((detail) => { setTractDetail(detail) })
       .catch(() => {})
       .finally(() => setTractDetailLoading(false))
   }

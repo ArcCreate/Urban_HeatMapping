@@ -62,9 +62,28 @@ export interface ActiveScenario {
   green_space_sqft?: number
 }
 
+export interface TractFullData {
+  tract_id: string
+  city_name?: string
+  xgb_heat_score: number
+  xgb_risk_score: number
+  tf_risk_score: number
+  mean_afternoon_temp?: number
+  mean_tree_cov?: number
+  mean_imperv?: number
+  mean_dist_water?: number
+  mean_life_expectancy?: number
+  mean_svi_overall?: number
+  mean_poverty2x?: number
+  mean_disability?: number
+  mean_cvd_rate?: number
+  mean_diabetes?: number
+}
+
 export interface MapContext {
   selected_tract_ids: string[]
   current_scores: Record<string, TractScore>
+  tract_data: TractFullData[]
   active_scenario?: ActiveScenario
 }
 

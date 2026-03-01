@@ -26,7 +26,7 @@ export const useChatStore = create<ChatState>()((set) => ({
     timestamp: new Date(),
   }],
   isLoading: false,
-  mapContext: { selected_tract_ids: [], current_scores: {} },
+  mapContext: { selected_tract_ids: [], current_scores: {}, tract_data: [] },
   addMessage: (msg) => set((s) => ({ messages: [...s.messages, msg] })),
   setLoading: (v) => set({ isLoading: v }),
   updateMapContext: (ctx) => set({ mapContext: ctx }),
