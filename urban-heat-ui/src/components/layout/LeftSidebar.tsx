@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { Search, Plus, MapPin, ChevronRight, ArrowLeft, Layers } from 'lucide-react'
+import { Search, MapPin, ChevronRight, ArrowLeft, Layers } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useShallow } from 'zustand/shallow'
 import { useMapStore } from '../../store/mapStore'
@@ -293,7 +293,7 @@ export function LeftSidebar() {
   return (
     <div style={{
       height: '100%', display: 'flex', flexDirection: 'column',
-      background: '#12121A', fontFamily: '"IBM Plex Sans", sans-serif',
+      background: '#222222', fontFamily: '"IBM Plex Sans", sans-serif',
     }}>
       {/* Header */}
       <div style={{ padding: '16px 16px 8px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
@@ -516,19 +516,6 @@ export function LeftSidebar() {
         </AnimatePresence>
       </div>
 
-      {/* Footer */}
-      <div style={{ padding: '12px 16px', borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
-        <button style={{
-          width: '100%', background: '#E5E7EB', color: '#0A0A0F',
-          border: 'none', borderRadius: '8px', padding: '10px',
-          fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: '6px', fontFamily: '"DM Sans", sans-serif',
-        }}>
-          <Plus size={15} />
-          New Analysis
-        </button>
-      </div>
     </div>
   )
 }

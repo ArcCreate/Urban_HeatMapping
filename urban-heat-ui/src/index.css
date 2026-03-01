@@ -8,9 +8,9 @@
   --font-mono: "IBM Plex Mono", monospace;
 
   /* Background surfaces */
-  --color-bg-base: #0A0A0F;
-  --color-bg-surface: #12121A;
-  --color-bg-elevated: #1A1A26;
+  --color-bg-base: #1A1A1A;
+  --color-bg-surface: #222222;
+  --color-bg-elevated: #2A2A2A;
 
   /* Accents */
   --color-accent-cyan: #00E5FF;
@@ -39,7 +39,7 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #0A0A0F;
+  background-color: #1A1A1A;
   font-family: "IBM Plex Sans", sans-serif;
   color: #E5E7EB;
 }

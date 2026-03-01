@@ -2,13 +2,14 @@ import { useRef, useCallback, useMemo } from 'react'
 import Map, { Source, Layer, NavigationControl } from 'react-map-gl/maplibre'
 import type { MapRef, MapLayerMouseEvent, LayerProps } from 'react-map-gl/maplibre'
 import type { Geometry } from 'geojson'
+import { Home } from 'lucide-react'
 import { useMapStore, useShallow } from '../../store/mapStore'
 import { fetchTractDetail } from '../../api/tracts'
 import { CountyBorderLayer } from './CountyBorderLayer'
 import { CityLabelsLayer } from './CityLabelsLayer'
 import { TractPopup } from './TractPopup'
-import { MapFloatingCard } from './MapFloatingCard'
 import { TimelineSlider } from './TimelineSlider'
+import { GlassCard } from '../ui/GlassCard'
 
 // King County hard bounds — prevents panning/zooming outside the county
 const KING_COUNTY_BOUNDS: [[number, number], [number, number]] = [
@@ -134,6 +135,15 @@ export function HeatMap() {
     }
   }, [])
 
+  const handleResetView = useCallback(() => {
+    internalMapRef.current?.flyTo({
+      center: [-122.1, 47.45],
+      zoom: 9.5,
+      duration: 900,
+      essential: true,
+    })
+  }, [])
+
   const clearSelection = useCallback(() => {
     const map = internalMapRef.current?.getMap()
     if (map && selectedFeatureId !== null) {
@@ -173,7 +183,7 @@ export function HeatMap() {
       if (bbox) {
         map.fitBounds(
           [[bbox[0], bbox[1]], [bbox[2], bbox[3]]],
-          { padding: 100, duration: 800, maxZoom: 13 }
+          { padding: 100, duration: 800, maxZoom: 11 }
         )
       }
     }
@@ -270,7 +280,27 @@ export function HeatMap() {
         )}
       </Map>
 
-      <MapFloatingCard />
+      {/* Reset View — pinned top-left, never leaves screen */}
+      <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 10 }}>
+        <GlassCard>
+          <button
+            onClick={handleResetView}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '7px',
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: '7px 14px',
+              color: '#00E5FF',
+              fontSize: '0.78rem', fontWeight: 600,
+              fontFamily: '"IBM Plex Sans", sans-serif',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Home size={13} />
+            Reset View
+          </button>
+        </GlassCard>
+      </div>
+
       <TimelineSlider />
 
       {isMapLoading && (

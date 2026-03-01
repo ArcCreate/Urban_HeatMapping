@@ -8,7 +8,7 @@ export default function App() {
   useTractData()
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: '#0A0A0F' }}>
+    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: '#1A1A1A' }}>
       <AppHeader />
       <div className="flex flex-1 overflow-hidden">
         <aside

@@ -9,7 +9,7 @@ interface GlassCardProps {
 export function GlassCard({ children, style = {} }: GlassCardProps) {
   return (
     <div style={{
-      background: 'rgba(18, 18, 26, 0.88)',
+      background: 'rgba(34, 34, 34, 0.92)',
       backdropFilter: 'blur(16px)',
       WebkitBackdropFilter: 'blur(16px)',
       border: '1px solid rgba(255, 255, 255, 0.10)',
