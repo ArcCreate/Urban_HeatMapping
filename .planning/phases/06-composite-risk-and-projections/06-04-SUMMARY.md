@@ -84,6 +84,7 @@ Each task was committed atomically:
 
 1. **Task 1: Create API client, update types, extend store with projection state** - `6b38e6b` (feat)
 2. **Task 2: Wire TimelineSlider and TractPopup to projection store** - `431fb7b` (feat)
+3. **Task 3: Checkpoint — human-verify** - APPROVED by user
 
 **Plan metadata:** *(docs commit follows)*
 
@@ -122,7 +123,7 @@ None - all changes are frontend wiring to the existing projections API (complete
 
 ## Next Phase Readiness
 - Phase 06 complete — all 4 plans executed
-- Projection timeline is fully functional end-to-end pending manual verification at the checkpoint
+- Projection timeline verified end-to-end by user: scrubbing 2025–2050, loading indicator, PROJ label, cache hit, play/pause all confirmed working
 - Cache prevents redundant network requests when scrubbing back to previously loaded years
 - Baseline (2025) always uses composite_risk without any API call
 
