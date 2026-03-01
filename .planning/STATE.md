@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T04:22:37.640Z"
+last_updated: "2026-03-01T04:26:00Z"
 progress:
   total_phases: 1
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
+  completed_plans: 4
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-Phase: v1.0 SHIPPED — all 4 phases complete
-Plan: 10/10 plans complete
-Status: v1.0 MVP archived. Full API operational: health, tracts, blocks, predictions, summary, batch, simulations, chat.
-Last activity: 2026-03-01 — v1.0 MVP milestone archived; RETROSPECTIVE.md written; tagged v1.0
+Phase: 05-heat-map-dashboard-ui — 4/4 plans complete
+Plan: 4/4 plans complete
+Status: Phase 05 complete. Dashboard UI animated and polished. All 4 plans executed.
+Last activity: 2026-03-01 — 05-04 animation polish complete (GlassCard, MapFloatingCard, TimelineSlider, Framer Motion stagger/slide-in)
 
 Progress: [██████████] 100%
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100%
 | Phase 05-heat-map-dashboard-ui P01 | 2 | 2 tasks | 14 files |
 | Phase 05-heat-map-dashboard-ui P02 | 2 | 2 tasks | 6 files |
 | Phase 05-heat-map-dashboard-ui P03 | 5 | 2 tasks | 7 files |
+| Phase 05-heat-map-dashboard-ui P04 | 2 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,10 @@ Recent decisions affecting current work:
 - [Phase 05-heat-map-dashboard-ui]: mapRef exported as plain module-level object for Plan 03 fly-to — no Context or prop drilling required
 - [Phase 05-heat-map-dashboard-ui]: Fly-to uses King County center (-122.1, 47.5) at zoom 10 for all tract cards — all tracts are in King County
 - [Phase 05-heat-map-dashboard-ui]: useChatScroll only auto-scrolls when within 120px of bottom — preserves user scroll position when reading chat history
+- [Phase 05-heat-map-dashboard-ui]: motion/react (not framer-motion) is the canonical import — motion package v12 ships motion/react as subpath
+- [Phase 05-heat-map-dashboard-ui]: Stagger variants defined at module level — stable object references prevent re-creation on each render
+- [Phase 05-heat-map-dashboard-ui]: AnimatePresence initial=false on chat list — welcome message does not animate on mount, only new messages do
+- [Phase 05-heat-map-dashboard-ui]: TractPopup motion.div wraps inner content only — react-map-gl Popup owns DOM positioning
 
 ### Roadmap Evolution
 
@@ -123,5 +128,5 @@ None — all v1.0 blockers resolved. See PROJECT.md Known Issues for tech debt i
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: v1.0 MVP milestone complete — archived to .planning/milestones/, tagged v1.0, retrospective written.
-Resume file: None — start fresh with /gsd:new-milestone for v1.1
+Stopped at: Completed 05-04-PLAN.md — animation polish and glassmorphism floating UI complete.
+Resume file: None — Phase 05 complete.
