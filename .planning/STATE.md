@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T04:10:34.157Z"
+last_updated: "2026-03-01T04:15:59.039Z"
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -56,6 +56,7 @@ Progress: [██████████] 100%
 | Phase 03-simulation-engine P02 | 2 | 2 tasks | 3 files |
 | Phase 04-chat-endpoint P01 | 2 | 2 tasks | 5 files |
 | Phase 05-heat-map-dashboard-ui P01 | 2 | 2 tasks | 14 files |
+| Phase 05-heat-map-dashboard-ui P02 | 2 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,9 @@ Recent decisions affecting current work:
 - [Phase 05-heat-map-dashboard-ui]: Tailwind v4 CSS-first: @import tailwindcss + @theme block in index.css (no tailwind.config.js)
 - [Phase 05-heat-map-dashboard-ui]: useShallow re-exported from mapStore — consumers import from one place
 - [Phase 05-heat-map-dashboard-ui]: class=dark always on html element — dark-mode-always pattern per locked design decision
+- [Phase 05-heat-map-dashboard-ui]: LayerProps (not FillLayer/LineLayer) is the correct react-map-gl/maplibre type for layer spec objects — FillLayerSpecification requires source field; LayerProps uses OptionalSource wrapper
+- [Phase 05-heat-map-dashboard-ui]: hoveredTractId as module-level var (not useRef/useState) for GPU-side feature-state hover — eliminates 60fps React re-renders on map hover
+- [Phase 05-heat-map-dashboard-ui]: mapRef exported as plain module-level object for Plan 03 fly-to — no Context or prop drilling required
 
 ### Roadmap Evolution
 
