@@ -46,7 +46,7 @@ export function HeatMap() {
     geojsonData, isMapLoading, popupInfo,
     setPopupInfo, setSelectedTractId,
     setTractDetail, setTractDetailLoading,
-    tractDetail, colorStops,
+    tractDetail, colorStops, projectionYear,
   } = useMapStore(
     useShallow((s) => ({
       geojsonData: s.geojsonData,
@@ -58,6 +58,7 @@ export function HeatMap() {
       setTractDetailLoading: s.setTractDetailLoading,
       tractDetail: s.tractDetail,
       colorStops: s.colorStops,
+      projectionYear: s.projectionYear,
     }))
   )
 
@@ -136,7 +137,8 @@ export function HeatMap() {
     }
     const feature = event.features[0]
     const props = feature.properties as {
-      tract_id: string; xgb_heat_score: number; xgb_risk_score: number; tf_risk_score: number; display_risk: number
+      tract_id: string; xgb_heat_score: number; xgb_risk_score: number; tf_risk_score: number;
+      display_risk: number; composite_risk?: number
     }
     if (map && feature.id !== undefined) {
       selectedFeatureId = feature.id
@@ -150,6 +152,8 @@ export function HeatMap() {
       xgb_risk_score: props.xgb_risk_score,
       tf_risk_score: props.tf_risk_score,
       display_risk: props.display_risk ?? 0,
+      composite_risk: props.composite_risk,
+      projectionYear: projectionYear > 2025 ? projectionYear : undefined,
     })
     setTractDetailLoading(true)
     setTractDetail(null)
@@ -157,7 +161,7 @@ export function HeatMap() {
       .then(setTractDetail)
       .catch(() => {})
       .finally(() => setTractDetailLoading(false))
-  }, [setPopupInfo, setSelectedTractId, setTractDetail, setTractDetailLoading])
+  }, [setPopupInfo, setSelectedTractId, setTractDetail, setTractDetailLoading, projectionYear])
 
   return (
     <div className="relative w-full h-full">

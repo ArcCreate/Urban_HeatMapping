@@ -1,16 +1,39 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Play, Pause, Clock } from 'lucide-react'
 import { GlassCard } from '../ui/GlassCard'
+import { useMapStore, useShallow } from '../../store/mapStore'
 
-const MIN_YEAR = 2024
-const MAX_YEAR = 2035
+const MIN_YEAR = 2025
+const MAX_YEAR = 2050
 
 export function TimelineSlider() {
-  const [year, setYear] = useState(MIN_YEAR)
+  const { projectionYear, fetchProjectionYear, isProjectionLoading } = useMapStore(
+    useShallow((s) => ({
+      projectionYear: s.projectionYear,
+      fetchProjectionYear: s.fetchProjectionYear,
+      isProjectionLoading: s.isProjectionLoading,
+    }))
+  )
   const [playing, setPlaying] = useState(false)
+  const playIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Auto-play: advance one year per 1.5s, wrap back to MIN_YEAR at MAX_YEAR
+  useEffect(() => {
+    if (playing) {
+      playIntervalRef.current = setInterval(() => {
+        const next = projectionYear < MAX_YEAR ? projectionYear + 1 : MIN_YEAR
+        fetchProjectionYear(next)
+      }, 1500)
+    } else {
+      if (playIntervalRef.current) clearInterval(playIntervalRef.current)
+    }
+    return () => {
+      if (playIntervalRef.current) clearInterval(playIntervalRef.current)
+    }
+  }, [playing, projectionYear, fetchProjectionYear])
 
   // Progress percentage for gradient track
-  const pct = ((year - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100
+  const pct = ((projectionYear - MIN_YEAR) / (MAX_YEAR - MIN_YEAR)) * 100
 
   return (
     <div style={{
@@ -25,7 +48,6 @@ export function TimelineSlider() {
     }}>
       <GlassCard style={{ padding: '12px 18px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {/* Clock icon + label */}
           <Clock size={14} color="rgba(229,231,235,0.5)" />
           <span style={{
             fontSize: '0.65rem',
@@ -40,7 +62,6 @@ export function TimelineSlider() {
 
           {/* Slider */}
           <div style={{ flex: 1, position: 'relative', height: '6px', margin: '0 6px' }}>
-            {/* Gradient track */}
             <div style={{
               position: 'absolute',
               inset: 0,
@@ -51,8 +72,8 @@ export function TimelineSlider() {
               type="range"
               min={MIN_YEAR}
               max={MAX_YEAR}
-              value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
+              value={projectionYear}
+              onChange={(e) => fetchProjectionYear(Number(e.target.value))}
               style={{
                 position: 'absolute',
                 inset: 0,
@@ -77,16 +98,16 @@ export function TimelineSlider() {
             }} />
           </div>
 
-          {/* Year label */}
+          {/* Year label — shows loading indicator when fetching */}
           <span style={{
             fontFamily: '"IBM Plex Mono", monospace',
             fontSize: '0.85rem',
             fontWeight: 700,
-            color: '#E5E7EB',
+            color: isProjectionLoading ? '#FFC107' : '#E5E7EB',
             minWidth: '40px',
             textAlign: 'center',
           }}>
-            {year}
+            {isProjectionLoading ? '···' : projectionYear}
           </span>
 
           {/* Play/pause */}

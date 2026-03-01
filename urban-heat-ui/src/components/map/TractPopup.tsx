@@ -50,8 +50,13 @@ interface TractPopupProps {
 }
 
 export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
-  const { tractDetail, isTractDetailLoading, rankedTracts } = useMapStore(
-    useShallow((s) => ({ tractDetail: s.tractDetail, isTractDetailLoading: s.isTractDetailLoading, rankedTracts: s.rankedTracts }))
+  const { tractDetail, isTractDetailLoading, rankedTracts, projectionYear } = useMapStore(
+    useShallow((s) => ({
+      tractDetail: s.tractDetail,
+      isTractDetailLoading: s.isTractDetailLoading,
+      rankedTracts: s.rankedTracts,
+      projectionYear: s.projectionYear,
+    }))
   )
 
   const normalizedRisk = popupInfo.display_risk * 10
@@ -112,7 +117,9 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             flexShrink: 0,
             marginLeft: '10px',
           }}>
-            <div style={{ fontSize: '0.6rem', color: 'rgba(229,231,235,0.4)', letterSpacing: '0.06em' }}>RISK</div>
+            <div style={{ fontSize: '0.6rem', color: 'rgba(229,231,235,0.4)', letterSpacing: '0.06em' }}>
+              {projectionYear > 2025 ? `PROJ ${projectionYear}` : 'RISK'}
+            </div>
             <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '1rem', fontWeight: 700, color: '#00E5FF', lineHeight: 1.1 }}>
               {normalizedRisk.toFixed(1)}
             </div>
