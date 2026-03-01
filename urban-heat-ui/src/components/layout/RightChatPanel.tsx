@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { Bot } from 'lucide-react'
+import { motion, AnimatePresence } from 'motion/react'
 import { useShallow } from 'zustand/shallow'
 import { useChatStore } from '../../store/chatStore'
 import { useMapStore } from '../../store/mapStore'
@@ -112,11 +113,25 @@ export function RightChatPanel() {
         ref={containerRef}
         style={{ flex: 1, overflowY: 'auto', padding: '12px 0 4px' }}
       >
-        {messages.map((msg) => (
-          <ChatMessage key={msg.id} message={msg} />
-        ))}
+        <AnimatePresence initial={false}>
+          {messages.map((msg) => (
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChatMessage message={msg} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
         {isLoading && (
-          <div style={{ padding: '0 12px 8px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ padding: '0 12px 8px', display: 'flex', gap: '8px', alignItems: 'center' }}
+          >
             <div style={{
               width: '28px', height: '28px', borderRadius: '50%',
               background: '#7C3AED', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -132,7 +147,7 @@ export function RightChatPanel() {
             }}>
               Analyzing...
             </div>
-          </div>
+          </motion.div>
         )}
         <div ref={endRef} />
       </div>

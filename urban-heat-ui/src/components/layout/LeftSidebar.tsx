@@ -1,10 +1,27 @@
 import { useState, useMemo } from 'react'
 import { Search, Plus } from 'lucide-react'
+import { motion } from 'motion/react'
 import { useShallow } from 'zustand/shallow'
 import { useMapStore } from '../../store/mapStore'
 import { useChatStore } from '../../store/chatStore'
 import { mapRef } from '../map/HeatMap'
 import type { RankedTract } from '../../types/api'
+
+// Stable variant objects defined at module level — no re-creation on render
+const listVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.05 } },
+}
+
+const listVariantsDelayed = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.35 } },
+}
+
+const cardVariants = {
+  hidden: { opacity: 0, x: -14 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },
+}
 
 function getSuitability(score: number): { label: string; color: string; bg: string } {
   if (score >= 0.65) return { label: 'Low', color: '#F44336', bg: 'rgba(244,67,54,0.15)' }
@@ -180,14 +197,21 @@ export function LeftSidebar() {
                 <div style={{ padding: '4px 14px 2px', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(229,231,235,0.3)' }}>
                   TODAY
                 </div>
-                {today.map((tract) => (
-                  <LocationCard
-                    key={tract.tract_id}
-                    tract={tract}
-                    isActive={tract.tract_id === selectedTractId}
-                    onClick={() => handleCardClick(tract)}
-                  />
-                ))}
+                <motion.div
+                  variants={listVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {today.map((tract) => (
+                    <motion.div key={tract.tract_id} variants={cardVariants}>
+                      <LocationCard
+                        tract={tract}
+                        isActive={tract.tract_id === selectedTractId}
+                        onClick={() => handleCardClick(tract)}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
               </>
             )}
             {yesterday.length > 0 && (
@@ -195,14 +219,21 @@ export function LeftSidebar() {
                 <div style={{ padding: '8px 14px 2px', fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.08em', color: 'rgba(229,231,235,0.3)' }}>
                   YESTERDAY
                 </div>
-                {yesterday.map((tract) => (
-                  <LocationCard
-                    key={tract.tract_id}
-                    tract={tract}
-                    isActive={tract.tract_id === selectedTractId}
-                    onClick={() => handleCardClick(tract)}
-                  />
-                ))}
+                <motion.div
+                  variants={listVariantsDelayed}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {yesterday.map((tract) => (
+                    <motion.div key={tract.tract_id} variants={cardVariants}>
+                      <LocationCard
+                        tract={tract}
+                        isActive={tract.tract_id === selectedTractId}
+                        onClick={() => handleCardClick(tract)}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
               </>
             )}
           </>
