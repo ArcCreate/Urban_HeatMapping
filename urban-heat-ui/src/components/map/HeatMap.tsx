@@ -1,4 +1,5 @@
 import { useRef, useCallback, useMemo } from 'react'
+import { AnimatePresence } from 'motion/react'
 import Map, { Source, Layer, NavigationControl } from 'react-map-gl/maplibre'
 import type { MapRef, MapLayerMouseEvent, LayerProps } from 'react-map-gl/maplibre'
 import type { Geometry } from 'geojson'
@@ -274,11 +275,14 @@ export function HeatMap() {
         )}
 
         <CityLabelsLayer />
+      </Map>
 
+      {/* Tract detail card — fixed overlay, never leaves screen */}
+      <AnimatePresence>
         {popupInfo && (
           <TractPopup popupInfo={popupInfo} onClose={clearSelection} />
         )}
-      </Map>
+      </AnimatePresence>
 
       {/* Reset View — pinned top-left, never leaves screen */}
       <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 10 }}>
