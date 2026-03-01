@@ -21,10 +21,12 @@ interface MapState {
   projectionYear: number
   projectionScores: Map<number, Map<string, number>>
   isProjectionLoading: boolean
+  selectedCityName: string | null
   // Actions
   setGeojsonData: (data: FeatureCollection) => void
   setMapLoading: (v: boolean) => void
   setSelectedTractId: (id: string | null) => void
+  setSelectedCityName: (name: string | null) => void
   setPopupInfo: (info: PopupInfo | null) => void
   setRankedTracts: (tracts: RankedTract[]) => void
   setTractDetail: (detail: TractDetail | null) => void
@@ -68,6 +70,7 @@ export const useMapStore = create<MapState>()((set, get) => ({
   baselineColorStops: [0, 0.33, 0.66, 0.85, 1.0],
   isMapLoading: true,
   selectedTractId: null,
+  selectedCityName: null,
   popupInfo: null,
   rankedTracts: [],
   isRankedLoading: true,
@@ -86,6 +89,7 @@ export const useMapStore = create<MapState>()((set, get) => ({
   }),
   setMapLoading: (v) => set({ isMapLoading: v }),
   setSelectedTractId: (id) => set({ selectedTractId: id }),
+  setSelectedCityName: (name) => set({ selectedCityName: name }),
   setPopupInfo: (info) => set({ popupInfo: info }),
   setRankedTracts: (tracts) => set({ rankedTracts: tracts, isRankedLoading: false }),
   setTractDetail: (detail) => set({ tractDetail: detail }),

@@ -101,7 +101,17 @@ def main() -> None:
     df = conn.execute("SELECT * FROM tract_features").fetchdf()
     log.info("  %d tracts loaded", len(df))
 
-    scores = compute_composite(df).round(4)
+    scores = compute_composite(df)
+
+    # Fill NaN scores (tracts with all-NULL feature columns) with the county median
+    # so every tract gets a valid composite_risk instead of storing NULL/0.0.
+    nan_count = int(np.isnan(scores).sum())
+    if nan_count:
+        county_median = float(np.nanmedian(scores))
+        scores = np.where(np.isnan(scores), county_median, scores)
+        log.info("  Filled %d NaN scores with county median %.4f", nan_count, county_median)
+
+    scores = scores.round(4)
     log.info(
         "  composite_risk stats — min=%.4f max=%.4f mean=%.4f",
         np.nanmin(scores), np.nanmax(scores), np.nanmean(scores),

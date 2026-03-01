@@ -67,7 +67,7 @@ export function HeatMap() {
     setPopupInfo, setSelectedTractId,
     setTractDetail, setTractDetailLoading,
     tractDetail, colorStops, projectionYear,
-    selectedTractId,
+    selectedTractId, selectedCityName,
   } = useMapStore(
     useShallow((s) => ({
       geojsonData: s.geojsonData,
@@ -81,6 +81,7 @@ export function HeatMap() {
       colorStops: s.colorStops,
       projectionYear: s.projectionYear,
       selectedTractId: s.selectedTractId,
+      selectedCityName: s.selectedCityName,
     }))
   )
 
@@ -106,7 +107,9 @@ export function HeatMap() {
     },
   }), [colorStops])
 
-  const selectedCity = tractDetail?.city_name ?? null
+  // selectedCityName is set directly by sidebar region clicks; tractDetail.city_name
+  // is set when a tract is selected on the map. Either source triggers city highlighting.
+  const selectedCity = selectedCityName ?? tractDetail?.city_name ?? null
   const cityHighlightFilter: [string, ...unknown[]] = selectedCity
     ? ['==', ['get', 'city_name'], selectedCity]
     : ['==', ['literal', false], true]
