@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     # ML model file paths
     xgb_heat_model_path: Path = Path("models/xgb_heat.json")
     xgb_risk_model_path: Path = Path("models/xgb_risk.json")
-    tf_risk_model_path: Path = Path("models/tf_risk")
+    tf_risk_model_path: Path = Path("models/tf_risk.keras")
 
     # Anthropic (required — no default; validated by pydantic-settings at startup)
     anthropic_api_key: str
