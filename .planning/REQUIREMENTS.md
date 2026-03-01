@@ -41,7 +41,7 @@ Requirements for initial release. Each maps to a roadmap phase.
 
 ### Chat
 
-- [ ] **CHAT-01**: `POST /api/v1/chat` accepts `{message, map_context: {selected_tract_ids, current_scores, active_scenario}}`, injects map context into Claude system prompt, and returns `{reply, usage}`
+- [x] **CHAT-01**: `POST /api/v1/chat` accepts `{message, map_context: {selected_tract_ids, current_scores, active_scenario}}`, injects map context into Claude system prompt, and returns `{reply, usage}`
 
 ### Summary
 
@@ -110,7 +110,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BATCH-01 | Phase 2: Data Endpoints | Complete |
 | SIM-01 | Phase 3: Simulation Engine | Complete |
 | SIM-02 | Phase 3: Simulation Engine | Complete |
-| CHAT-01 | Phase 4: Chat Endpoint | Pending |
+| CHAT-01 | Phase 4: Chat Endpoint | Complete |
 
 **Coverage:**
 - v1 requirements: 20 total

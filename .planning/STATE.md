@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T00:25:05.636Z"
+last_updated: "2026-03-01T00:56:15Z"
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  total_phases: 4
+  completed_phases: 4
+  total_plans: 10
+  completed_plans: 10
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** City planners can explore where heat risk is highest across King County tracts, simulate the impact of interventions, and get AI-assisted reasoning — all through a fast, queryable JSON API.
-**Current focus:** Phase 3 — Simulation Engine
+**Current focus:** Phase 4 — Chat Endpoint (COMPLETE)
 
 ## Current Position
 
-Phase: 3 of 4 (Simulation Engine) — COMPLETE
-Plan: 2 of 2 in current phase — COMPLETE
-Status: Phase 3 complete — Simulation router (POST /what-if, POST /compare) wired and 12 integration tests passing
-Last activity: 2026-02-28 — Completed 03-02: simulation router, main.py wiring, 12 integration tests (SIM-01, SIM-02)
+Phase: 4 of 4 (Chat Endpoint) — COMPLETE
+Plan: 1 of 1 in current phase — COMPLETE
+Status: Phase 4 complete — POST /api/v1/chat wired with AsyncAnthropic, 8 tests passing, CHAT-01 fulfilled
+Last activity: 2026-03-01 — Completed 04-01: chat schemas, service, async router, 8 integration tests (CHAT-01)
 
 Progress: [██████████] 100%
 
@@ -54,6 +54,7 @@ Progress: [██████████] 100%
 | Phase 02-data-endpoints P05 | 8 | 2 tasks | 7 files |
 | Phase 03-simulation-engine P01 | 2 | 2 tasks | 2 files |
 | Phase 03-simulation-engine P02 | 2 | 2 tasks | 3 files |
+| Phase 04-chat-endpoint P01 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,10 @@ Recent decisions affecting current work:
 - [Phase 03-simulation-engine]: BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 — coefficients from Seattle canopy research, Scientific Reports 2024, Manchester/Adama City urban studies
 - [Phase 03-simulation-engine]: def (not async def) handlers in simulations router — DuckDB is synchronous, consistent with Phase 2 router pattern; FastAPI dispatches to threadpool
 - [Phase 03-simulation-engine]: Idempotent router registration guard in test file — hasattr(r, 'path') and '/simulations' in path prevents duplicate route registration
+- [Phase 04-chat-endpoint]: async def (not def) for chat handler — await anthropic.messages.create() requires async; first and only async router in project
+- [Phase 04-chat-endpoint]: claude-haiku-4-5-20251001 selected — current non-deprecated haiku model, cost-efficient for v1 planner queries
+- [Phase 04-chat-endpoint]: Compact per-tract format (h=, rx=, rt=) keeps 50-tract prompt under 3000 chars; verbose format exceeded limit (3407 chars)
+- [Phase 04-chat-endpoint]: System prompt budget: enumerate <= 50 tracts with IDs+scores; summarize > 50 with min/max/mean statistics
 
 ### Pending Todos
 
@@ -101,10 +106,10 @@ None.
 - Python 3.12 env at `/opt/anaconda3/envs/urban-heatmap/` confirmed working (Plan 02 tests passed). pytest installed.
 - [RESOLVED 03-01] Phase 3 (Simulation): Parametric formula coefficients sourced and implemented — BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 with literature citations.
 - [RESOLVED 02-01] Phase 2 (Geometry): `king_county.duckdb` geometry CRS and actual table/column names verified — all 492 tracts and 25,552 blocks match, WGS84, tables are tract_features/tract_outputs_with_preds/blocks.
-- Phase 4 (Chat): Claude model selection (Opus vs Sonnet) and context token budget strategy need confirmation before chat endpoint is finalized.
+- [RESOLVED 04-01] Phase 4 (Chat): claude-haiku-4-5-20251001 selected; token budget strategy implemented (enumerate <= 50 / summarize > 50).
 
 ## Session Continuity
 
-Last session: 2026-02-28
-Stopped at: Completed 03-02-PLAN.md — Simulation router, main.py wiring, 12 integration tests; Phase 3 complete
+Last session: 2026-03-01
+Stopped at: Completed 04-01-PLAN.md — Chat endpoint (POST /api/v1/chat), 8 tests, CHAT-01; Phase 4 complete. API v1 feature set complete.
 Resume file: None

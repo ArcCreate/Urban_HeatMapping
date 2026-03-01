@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - FastAPI app starts cleanly with DuckDB, models, and Anthropic client wired into app.state; health endpoint live (completed 2026-02-28)
 - [x] **Phase 2: Data Endpoints** - All tract, block, prediction, summary, and batch endpoints return correct GeoJSON and typed JSON from DuckDB (completed 2026-02-28)
 - [x] **Phase 3: Simulation Engine** - What-if and scenario-compare endpoints apply parametric formulas and return per-tract delta scores (completed 2026-03-01)
-- [ ] **Phase 4: Chat Endpoint** - Claude assistant accepts map context and returns reasoned responses for planner questions
+- [x] **Phase 4: Chat Endpoint** - Claude assistant accepts map context and returns reasoned responses for planner questions (completed 2026-03-01)
 
 ## Phase Details
 
@@ -91,4 +91,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation | 2/2 | Complete   | 2026-02-28 |
 | 2. Data Endpoints | 5/5 | Complete   | 2026-02-28 |
 | 3. Simulation Engine | 2/2 | Complete   | 2026-03-01 |
-| 4. Chat Endpoint | 0/1 | Not started | - |
+| 4. Chat Endpoint | 1/1 | Complete   | 2026-03-01 |
