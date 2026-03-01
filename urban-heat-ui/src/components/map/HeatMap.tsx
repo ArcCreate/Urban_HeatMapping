@@ -1,6 +1,7 @@
 import { useRef, useCallback, useMemo } from 'react'
 import Map, { Source, Layer, NavigationControl } from 'react-map-gl/maplibre'
 import type { MapRef, MapLayerMouseEvent, LayerProps } from 'react-map-gl/maplibre'
+import type { Geometry } from 'geojson'
 import { useMapStore, useShallow } from '../../store/mapStore'
 import { fetchTractDetail } from '../../api/tracts'
 import { CountyBorderLayer } from './CountyBorderLayer'
@@ -9,20 +10,37 @@ import { TractPopup } from './TractPopup'
 import { MapFloatingCard } from './MapFloatingCard'
 import { TimelineSlider } from './TimelineSlider'
 
+// King County hard bounds — prevents panning/zooming outside the county
+const KING_COUNTY_BOUNDS: [[number, number], [number, number]] = [
+  [-122.56, 47.04],  // SW corner
+  [-121.06, 47.82],  // NE corner
+]
+
+// Derive bounding box from any GeoJSON geometry for fly-to on zone click
+function getGeometryBbox(geom: Geometry): [number, number, number, number] | null {
+  const coords: number[][] = []
+  function collect(c: unknown) {
+    if (!Array.isArray(c)) return
+    if (typeof c[0] === 'number') { coords.push(c as number[]); return }
+    c.forEach(collect)
+  }
+  if ('coordinates' in geom) collect(geom.coordinates)
+  else if ('geometries' in geom) geom.geometries.forEach((g) => collect((g as Geometry & { coordinates?: unknown }).coordinates))
+  if (!coords.length) return null
+  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity
+  for (const [lng, lat] of coords) {
+    if (lng < minLng) minLng = lng; if (lng > maxLng) maxLng = lng
+    if (lat < minLat) minLat = lat; if (lat > maxLat) maxLat = lat
+  }
+  return [minLng, minLat, maxLng, maxLat]
+}
+
 const tractOutlineLayer: LayerProps = {
   id: 'tract-outline',
   type: 'line',
   paint: {
-    'line-color': [
-      'case',
-      ['boolean', ['feature-state', 'selected'], false], '#00E5FF',
-      'rgba(255,255,255,0.12)'
-    ],
-    'line-width': [
-      'case',
-      ['boolean', ['feature-state', 'selected'], false], 2,
-      0.4
-    ]
+    'line-color': 'rgba(255,255,255,0.12)',
+    'line-width': 0.4,
   }
 }
 
@@ -64,7 +82,6 @@ export function HeatMap() {
     }))
   )
 
-  // Green → light yellow → dark orange mapped to quantile breakpoints of display_risk
   const tractFillLayer: LayerProps = useMemo(() => ({
     id: 'tract-fill',
     type: 'fill',
@@ -72,11 +89,11 @@ export function HeatMap() {
       'fill-color': [
         'interpolate', ['linear'],
         ['get', 'display_risk'],
-        colorStops[0], '#388E3C',  // p0   — dark green
-        colorStops[1], '#8BC34A',  // p33  — light green
-        colorStops[2], '#FFF176',  // p66  — light yellow
-        colorStops[3], '#FB8C00',  // p85  — orange
-        colorStops[4], '#BF360C',  // p100 — dark orange
+        colorStops[0], '#388E3C',
+        colorStops[1], '#8BC34A',
+        colorStops[2], '#FFF176',
+        colorStops[3], '#FB8C00',
+        colorStops[4], '#BF360C',
       ],
       'fill-opacity': [
         'case',
@@ -87,11 +104,14 @@ export function HeatMap() {
     },
   }), [colorStops])
 
-  // City highlight layer — filters to all tracts sharing the selected city_name
   const selectedCity = tractDetail?.city_name ?? null
   const cityHighlightFilter: [string, ...unknown[]] = selectedCity
     ? ['==', ['get', 'city_name'], selectedCity]
-    : ['==', ['literal', false], true]  // matches nothing
+    : ['==', ['literal', false], true]
+
+  const selectedTractFilter: [string, ...unknown[]] = selectedTractId
+    ? ['==', ['get', 'tract_id'], selectedTractId]
+    : ['==', ['literal', false], true]
 
   const onMouseMove = useCallback((event: MapLayerMouseEvent) => {
     if (!event.features?.length) return
@@ -146,6 +166,18 @@ export function HeatMap() {
       selectedFeatureId = feature.id
       map.setFeatureState({ source: 'tracts', id: feature.id }, { selected: true })
     }
+
+    // Fly to the clicked zone's bounds
+    if (map && feature.geometry) {
+      const bbox = getGeometryBbox(feature.geometry as Geometry)
+      if (bbox) {
+        map.fitBounds(
+          [[bbox[0], bbox[1]], [bbox[2], bbox[3]]],
+          { padding: 100, duration: 800, maxZoom: 13 }
+        )
+      }
+    }
+
     setSelectedTractId(props.tract_id)
     setPopupInfo({
       longitude: event.lngLat.lng, latitude: event.lngLat.lat,
@@ -170,58 +202,61 @@ export function HeatMap() {
       <Map
         ref={internalMapRef}
         onLoad={onMapLoad}
-        initialViewState={{ longitude: -122.1, latitude: 47.5, zoom: 9.5 }}
+        initialViewState={{ longitude: -122.1, latitude: 47.45, zoom: 9.5 }}
         mapStyle={MAP_STYLE}
+        // Restrict to King County — no zooming out past county view
+        maxBounds={KING_COUNTY_BOUNDS}
+        minZoom={8.5}
+        maxZoom={14}
+        // Disable all rotation and pitch
+        dragRotate={false}
+        touchPitch={false}
+        pitchWithRotate={false}
+        keyboard={false}
         interactiveLayerIds={['tract-fill']}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         onClick={onTractClick}
         style={{ width: '100%', height: '100%' }}
       >
-        <NavigationControl position="top-right" />
+        <NavigationControl position="top-right" showCompass={false} />
         <CountyBorderLayer />
 
         {geojsonData && (
           <Source id="tracts" type="geojson" data={geojsonData} generateId={true}>
             <Layer {...tractFillLayer} />
 
-            {/* City group: subtle fill tint over all tracts in the selected city */}
+            {/* City group: subtle fill tint */}
             <Layer
               id="city-fill"
               type="fill"
               filter={cityHighlightFilter}
-              paint={{
-                'fill-color': 'rgba(255, 179, 0, 0.07)',
-              }}
-            />
-
-            {/* City group: amber border around every tract in the city — reads as a city zone */}
-            <Layer
-              id="city-outline"
-              type="line"
-              filter={cityHighlightFilter}
-              paint={{
-                'line-color': '#FFB300',
-                'line-width': 1.5,
-                'line-opacity': 0.6,
-              }}
+              paint={{ 'fill-color': 'rgba(183, 28, 28, 0.06)' }}
             />
 
             {/* Default tract borders */}
             <Layer {...tractOutlineLayer} />
 
-            {/* Selected tract: bright cyan outline on top of everything */}
+            {/* City limits: dark red border on all tracts in selected city */}
+            <Layer
+              id="city-outline"
+              type="line"
+              filter={cityHighlightFilter}
+              paint={{
+                'line-color': '#B71C1C',
+                'line-width': 2,
+                'line-opacity': 0.85,
+              }}
+            />
+
+            {/* Selected zone: blue outline, clearly distinct from city red */}
             <Layer
               id="tract-selected-outline"
               type="line"
-              filter={
-                selectedTractId
-                  ? ['==', ['get', 'tract_id'], selectedTractId]
-                  : ['==', ['literal', false], true]
-              }
+              filter={selectedTractFilter}
               paint={{
-                'line-color': '#00E5FF',
-                'line-width': 3,
+                'line-color': '#1E88E5',
+                'line-width': 3.5,
                 'line-opacity': 1,
               }}
             />

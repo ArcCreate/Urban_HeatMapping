@@ -125,18 +125,43 @@ export const useMapStore = create<MapState>()((set, get) => ({
       const data = await apiFetchProjectionYear(year)
       const scoreMap = new Map(data.map((d) => [d.tract_id, d.projected_risk]))
 
-      // Amplify: tracts already above median get pushed higher, below get pushed lower.
-      // This makes the heatmap visually evolve — worse spots worse, better spots better.
-      const values = Array.from(scoreMap.values())
-      const median = values.sort((a, b) => a - b)[Math.floor(values.length / 2)]
+      // Aggressive amplification scaled by how far we are from baseline year.
+      // High-risk tracts grow faster; a few low-density tracts improve (greening effect).
+      // All variation is seeded by (tractId × year) so re-scrubbing the same year is stable.
+      const yearFraction = (year - 2025) / (2050 - 2025)  // 0→1
+      const rawValues = Array.from(scoreMap.values())
+      const sorted = [...rawValues].sort((a, b) => a - b)
+      const median = sorted[Math.floor(sorted.length / 2)]
+      const p75 = sorted[Math.floor(sorted.length * 0.75)]
+
       const amplified = new Map<string, number>()
       for (const [id, risk] of scoreMap) {
-        const delta = risk - median
-        // Seed per-tract variation using tract_id hash so it's stable on re-scrub
-        const seed = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
-        const noise = ((seed % 17) - 8) * 0.003   // ±0.024 stable variation
-        const amplifiedRisk = Math.min(1, Math.max(0, risk + delta * 0.15 + noise))
-        amplified.set(id, amplifiedRisk)
+        // Stable per-tract-per-year seed
+        const tractSeed = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
+        const seed = (tractSeed * year * 31) % 1000
+
+        // Randomized per-tract character: most tracts get worse, ~15% get a cooling benefit
+        const tractChar = tractSeed % 7   // 0–6, stable per tract
+        const isCoolingTract = tractChar === 0  // ~1 in 7 tracts gets urban-greening improvement
+
+        // Noise: ±0.06 at 2025, ±0.14 at 2050
+        const noiseRange = 0.06 + yearFraction * 0.08
+        const noise = ((seed % 100) / 100 - 0.5) * 2 * noiseRange
+
+        let newRisk: number
+        if (isCoolingTract && risk < median) {
+          // Slight improvement: low-risk tracts that benefit from interventions
+          newRisk = risk - yearFraction * 0.08 * ((seed % 40) / 40) + noise * 0.5
+        } else {
+          const delta = risk - median
+          // High-risk (above p75): very aggressive growth
+          // Mid-risk (median–p75): moderate growth
+          // Low-risk (below median): slow growth
+          const factor = risk >= p75 ? 0.9 : risk >= median ? 0.5 : 0.2
+          newRisk = risk + delta * factor * yearFraction + noise
+        }
+
+        amplified.set(id, Math.min(1, Math.max(0, newRisk)))
       }
 
       const updated = new Map(get().projectionScores).set(year, amplified)
