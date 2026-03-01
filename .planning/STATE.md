@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: MVP
-status: milestone_complete
-last_updated: "2026-03-01T01:18:29.879Z"
+milestone_name: milestone
+status: unknown
+last_updated: "2026-03-01T04:10:34.157Z"
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 10
-  completed_plans: 10
+  total_phases: 1
+  completed_phases: 0
+  total_plans: 4
+  completed_plans: 1
 ---
 
 # Project State
@@ -55,6 +55,7 @@ Progress: [██████████] 100%
 | Phase 03-simulation-engine P01 | 2 | 2 tasks | 2 files |
 | Phase 03-simulation-engine P02 | 2 | 2 tasks | 3 files |
 | Phase 04-chat-endpoint P01 | 2 | 2 tasks | 5 files |
+| Phase 05-heat-map-dashboard-ui P01 | 2 | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Recent decisions affecting current work:
 - [Phase 04-chat-endpoint]: claude-haiku-4-5-20251001 selected — current non-deprecated haiku model, cost-efficient for v1 planner queries
 - [Phase 04-chat-endpoint]: Compact per-tract format (h=, rx=, rt=) keeps 50-tract prompt under 3000 chars; verbose format exceeded limit (3407 chars)
 - [Phase 04-chat-endpoint]: System prompt budget: enumerate <= 50 tracts with IDs+scores; summarize > 50 with min/max/mean statistics
+- [Phase 05-heat-map-dashboard-ui]: Tailwind v4 CSS-first: @import tailwindcss + @theme block in index.css (no tailwind.config.js)
+- [Phase 05-heat-map-dashboard-ui]: useShallow re-exported from mapStore — consumers import from one place
+- [Phase 05-heat-map-dashboard-ui]: class=dark always on html element — dark-mode-always pattern per locked design decision
 
 ### Roadmap Evolution
 
