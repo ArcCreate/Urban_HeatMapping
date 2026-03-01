@@ -1,6 +1,11 @@
 import AppHeader from './components/layout/AppHeader'
+import { HeatMap } from './components/map/HeatMap'
+import { useTractData } from './hooks/useTractData'
 
 export default function App() {
+  // Initiate GeoJSON + ranked tracts fetch on mount
+  useTractData()
+
   return (
     <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: '#0A0A0F' }}>
       <AppHeader />
@@ -14,12 +19,12 @@ export default function App() {
             Location sidebar — coming soon
           </div>
         </aside>
-        {/* Center map — filled in Plan 02 */}
-        <main className="flex-1 relative overflow-hidden" style={{ background: '#0A0A0F' }}>
-          <div className="absolute inset-0 flex items-center justify-center text-white/20 text-sm" style={{ fontFamily: '"IBM Plex Sans", sans-serif' }}>
-            Heat map — coming soon
-          </div>
+
+        {/* Center map — live! */}
+        <main className="flex-1 relative overflow-hidden">
+          <HeatMap />
         </main>
+
         {/* Right chat panel — filled in Plan 03 */}
         <aside
           className="shrink-0 overflow-y-auto border-l border-white/10 flex flex-col"
