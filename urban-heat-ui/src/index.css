@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* Fonts */
+  --font-display: "DM Sans", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* Background surfaces */
+  --color-bg-base: #0A0A0F;
+  --color-bg-surface: #12121A;
+  --color-bg-elevated: #1A1A26;
+
+  /* Accents */
+  --color-accent-cyan: #00E5FF;
+  --color-accent-teal: #00BFA5;
+
+  /* Heat gradient stops */
+  --color-heat-low: #FFE44D;
+  --color-heat-mid-a: #FF8C00;
+  --color-heat-mid-b: #FF2D2D;
+  --color-heat-high: #8B0000;
+
+  /* Suitability */
+  --color-suit-high: #4CAF50;
+  --color-suit-med: #FFC107;
+  --color-suit-low: #F44336;
+
+  /* Chat */
+  --color-chat-ai: #7C3AED;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #0A0A0F;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #E5E7EB;
+}
