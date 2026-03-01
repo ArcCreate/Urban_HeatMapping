@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-02-28T23:25:13.206Z"
+last_updated: "2026-03-01T00:18:06.779Z"
 progress:
-  total_phases: 2
+  total_phases: 3
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
+  total_plans: 9
+  completed_plans: 8
 ---
 
 # Project State
@@ -18,14 +18,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-02-28)
 
 **Core value:** City planners can explore where heat risk is highest across King County tracts, simulate the impact of interventions, and get AI-assisted reasoning — all through a fast, queryable JSON API.
-**Current focus:** Phase 2 — Data Endpoints
+**Current focus:** Phase 3 — Simulation Engine
 
 ## Current Position
 
-Phase: 2 of 4 (Data Endpoints) — COMPLETE
-Plan: 5 of 5 in current phase — COMPLETE
-Status: Phase 2 all plans complete — prediction/summary endpoints (PRED-01, PRED-02, SUM-01)
-Last activity: 2026-02-28 — Completed 02-05: prediction service, summary service, routers, 21 tests passing
+Phase: 3 of 4 (Simulation Engine) — IN PROGRESS
+Plan: 1 of 2 in current phase — COMPLETE
+Status: Phase 3 Plan 1 complete — Pydantic simulation schemas and parametric formula service (SIM-01, SIM-02)
+Last activity: 2026-03-01 — Completed 03-01: simulation schemas (6 Pydantic types), parametric service with BETA constants
 
 Progress: [██████████] 100%
 
@@ -52,6 +52,7 @@ Progress: [██████████] 100%
 | Phase 02-data-endpoints P04 | 2 | 2 tasks | 3 files |
 | Phase 02-data-endpoints P03 | 3 | 2 tasks | 5 files |
 | Phase 02-data-endpoints P05 | 8 | 2 tasks | 7 files |
+| Phase 03-simulation-engine P01 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -83,6 +84,10 @@ Recent decisions affecting current work:
 - [Phase 02-data-endpoints]: validation_exception_handler _safe_errors() helper: Pydantic v2 exc.errors() ctx contains ValueError objects — stringify ctx values to prevent JSONResponse TypeError
 - [Phase 02-data-endpoints]: sort_by/order query params use SortColumn/SortOrder enums — .value safe to interpolate into SQL because it comes from validated Enum allowlist
 - [Phase 02-data-endpoints]: High-risk tract threshold: xgb_heat_score > 0.75 per Phase 2 research spec; used in COUNT FILTER in summary query
+- [Phase 03-simulation-engine]: delta_risk = HEAT_WEIGHT * xgb_heat_score * (bounded_delta_temp / base_temp_safe) — proportional risk change tied to heat's share of composite score
+- [Phase 03-simulation-engine]: simulate_compare calls _compute_simulation twice independently — 404 from scenario_a propagates, no separate pre-validation pass needed
+- [Phase 03-simulation-engine]: TEMP_NULL_FALLBACK_F = 85.0 — prevents division-by-zero in risk delta formula when mean_afternoon_temp is NULL
+- [Phase 03-simulation-engine]: BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 — coefficients from Seattle canopy research, Scientific Reports 2024, Manchester/Adama City urban studies
 
 ### Pending Todos
 
@@ -91,12 +96,12 @@ None.
 ### Blockers/Concerns
 
 - Python 3.12 env at `/opt/anaconda3/envs/urban-heatmap/` confirmed working (Plan 02 tests passed). pytest installed.
-- Phase 3 (Simulation): Parametric formula coefficients (delta-T per % tree canopy, per albedo delta, per sqft green space) are not yet documented. Must be sourced before Phase 3 planning begins.
+- [RESOLVED 03-01] Phase 3 (Simulation): Parametric formula coefficients sourced and implemented — BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 with literature citations.
 - [RESOLVED 02-01] Phase 2 (Geometry): `king_county.duckdb` geometry CRS and actual table/column names verified — all 492 tracts and 25,552 blocks match, WGS84, tables are tract_features/tract_outputs_with_preds/blocks.
 - Phase 4 (Chat): Claude model selection (Opus vs Sonnet) and context token budget strategy need confirmation before chat endpoint is finalized.
 
 ## Session Continuity
 
-Last session: 2026-02-28
-Stopped at: Completed 02-05-PLAN.md — prediction and summary endpoints (PRED-01, PRED-02, SUM-01); all Phase 2 plans complete
+Last session: 2026-03-01
+Stopped at: Completed 03-01-PLAN.md — Pydantic simulation schemas and parametric formula service; Phase 3 Plan 1 complete
 Resume file: None

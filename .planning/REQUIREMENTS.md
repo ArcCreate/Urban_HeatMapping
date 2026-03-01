@@ -36,8 +36,8 @@ Requirements for initial release. Each maps to a roadmap phase.
 
 ### Simulations
 
-- [ ] **SIM-01**: `POST /api/v1/simulations/what-if` accepts `{tract_ids, interventions: {tree_canopy_pct, albedo_delta, green_space_sqft}}` and returns per-tract `{tract_id, delta_temp, delta_risk}` using rule-based parametric formulas
-- [ ] **SIM-02**: `POST /api/v1/simulations/compare` accepts `{tract_ids, scenario_a, scenario_b}` (each scenario has the same intervention shape as what-if) and returns per-tract deltas for both scenarios side by side
+- [x] **SIM-01**: `POST /api/v1/simulations/what-if` accepts `{tract_ids, interventions: {tree_canopy_pct, albedo_delta, green_space_sqft}}` and returns per-tract `{tract_id, delta_temp, delta_risk}` using rule-based parametric formulas
+- [x] **SIM-02**: `POST /api/v1/simulations/compare` accepts `{tract_ids, scenario_a, scenario_b}` (each scenario has the same intervention shape as what-if) and returns per-tract deltas for both scenarios side by side
 
 ### Chat
 
@@ -108,8 +108,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRED-02 | Phase 2: Data Endpoints | Complete |
 | SUM-01 | Phase 2: Data Endpoints | Complete |
 | BATCH-01 | Phase 2: Data Endpoints | Complete |
-| SIM-01 | Phase 3: Simulation Engine | Pending |
-| SIM-02 | Phase 3: Simulation Engine | Pending |
+| SIM-01 | Phase 3: Simulation Engine | Complete |
+| SIM-02 | Phase 3: Simulation Engine | Complete |
 | CHAT-01 | Phase 4: Chat Endpoint | Pending |
 
 **Coverage:**
