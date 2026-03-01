@@ -2,7 +2,7 @@
 """
 Pydantic schemas and enums for prediction endpoints.
 
-PRED-01: TractPrediction (tract_id + 3 scores, no geometry)
+PRED-01: TractPrediction (tract_id + 3 scores + composite_risk, no geometry)
 PRED-02: RankedTract, SortColumn, SortOrder (ranked list with validated sort params)
 """
 from enum import Enum
@@ -15,6 +15,7 @@ class SortColumn(str, Enum):
     xgb_heat_score = "xgb_heat_score"
     xgb_risk_score = "xgb_risk_score"
     tf_risk_score = "tf_risk_score"
+    composite_risk = "composite_risk"
 
 
 class SortOrder(str, Enum):
@@ -24,19 +25,21 @@ class SortOrder(str, Enum):
 
 
 class TractPrediction(BaseModel):
-    """Tract ID + 3 pre-scored model values, no geometry (PRED-01)."""
+    """Tract ID + model scores including composite_risk (PRED-01)."""
     tract_id: str
     xgb_heat_score: float
     xgb_risk_score: float
     tf_risk_score: float
+    composite_risk: float
 
 
 class RankedTract(BaseModel):
-    """Single row in PRED-02 ranked response — includes city_name and tree coverage for sidebar."""
+    """Single row in PRED-02 ranked response."""
     tract_id: str
     xgb_heat_score: float
     xgb_risk_score: float
     tf_risk_score: float
+    composite_risk: float | None = None
     city_name: str | None = None
     mean_tree_cov: float | None = None
     mean_imperv: float | None = None
