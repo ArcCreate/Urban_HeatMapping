@@ -76,7 +76,10 @@ Plans:
   1. `POST /api/v1/chat` with `{message, map_context: {selected_tract_ids, current_scores, active_scenario}}` returns `{reply, usage}` where reply is a non-empty string from Claude
   2. The system prompt injected into Claude includes the selected tract IDs, their current scores, and active scenario parameters — not raw full feature vectors
   3. Selecting more than 50 tracts does not cause a context window overflow; the system prompt remains under the model's token limit
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Schemas, service, async router, tests, and main.py wiring: app/schemas/chat.py, app/services/chat.py, app/routers/chat.py, tests/test_chat.py, app/main.py (CHAT-01)
 
 ## Progress
 
@@ -88,4 +91,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation | 2/2 | Complete   | 2026-02-28 |
 | 2. Data Endpoints | 5/5 | Complete   | 2026-02-28 |
 | 3. Simulation Engine | 2/2 | Complete   | 2026-03-01 |
-| 4. Chat Endpoint | 0/TBD | Not started | - |
+| 4. Chat Endpoint | 0/1 | Not started | - |
