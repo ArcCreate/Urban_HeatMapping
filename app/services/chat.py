@@ -29,12 +29,12 @@ def build_system_prompt(ctx: MapContext) -> str:
             scores = ctx.current_scores.get(tid)
             if scores:
                 parts.append(
-                    f"  {tid}: heat={scores.xgb_heat_score:.3f}, "
-                    f"risk_xgb={scores.xgb_risk_score:.3f}, "
-                    f"risk_tf={scores.tf_risk_score:.3f}"
+                    f"  {tid}: h={scores.xgb_heat_score:.3f},"
+                    f"rx={scores.xgb_risk_score:.3f},"
+                    f"rt={scores.tf_risk_score:.3f}"
                 )
             else:
-                parts.append(f"  {tid}: (scores not provided)")
+                parts.append(f"  {tid}: (no scores)")
     else:
         heat_vals = [s.xgb_heat_score for s in ctx.current_scores.values()]
         risk_vals = [s.xgb_risk_score for s in ctx.current_scores.values()]

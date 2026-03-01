@@ -13,7 +13,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.config import settings
 from app.models.loader import load_models
-from app.routers import health, tracts, predictions, summary, blocks, simulations
+from app.routers import health, tracts, predictions, summary, blocks, simulations, chat
 
 logger = logging.getLogger(__name__)
 
@@ -118,5 +118,4 @@ app.include_router(predictions.router, prefix="/api/v1")
 app.include_router(summary.router, prefix="/api/v1")
 app.include_router(blocks.router, prefix="/api/v1")
 app.include_router(simulations.router, prefix="/api/v1")
-# Future phases add:
-# app.include_router(chat.router, prefix="/api/v1")
+app.include_router(chat.router, prefix="/api/v1")
