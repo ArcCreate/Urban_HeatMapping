@@ -129,10 +129,17 @@ export const useMapStore = create<MapState>()((set, get) => ({
       const data = await apiFetchProjectionYear(year)
       const scoreMap = new Map(data.map((d) => [d.tract_id, d.projected_risk]))
 
-      // Aggressive amplification scaled by how far we are from baseline year.
-      // High-risk tracts grow faster; a few low-density tracts improve (greening effect).
-      // All variation is seeded by (tractId × year) so re-scrubbing the same year is stable.
-      const yearFraction = (year - 2025) / (2050 - 2025)  // 0→1
+      // Amplification scaled by how far we are from baseline year.
+      // High-risk tracts grow faster; ~1 in 7 low-risk tracts benefit from greening.
+      //
+      // Monotonicity guarantee: all variation is seeded by tractId only (never by year),
+      // and the per-tract bias term is strictly proportional to yearFraction.
+      // This ensures risk values only move in one direction as the slider advances.
+      const yearFraction = (year - 2025) / (2050 - 2025)  // 0→1, strictly increasing
+      // Concave curve: rises steeply in early years, levels toward 2050.
+      // e.g. 2026→0.20, 2030→0.45, 2035→0.63, 2040→0.77, 2050→1.0
+      // Still strictly monotonic so direction never reverses.
+      const curve = Math.pow(yearFraction, 0.5)
       const rawValues = Array.from(scoreMap.values())
       const sorted = [...rawValues].sort((a, b) => a - b)
       const median = sorted[Math.floor(sorted.length / 2)]
@@ -140,29 +147,28 @@ export const useMapStore = create<MapState>()((set, get) => ({
 
       const amplified = new Map<string, number>()
       for (const [id, risk] of scoreMap) {
-        // Stable per-tract-per-year seed
+        // Stable per-tract seed — year is intentionally excluded so character never flips
         const tractSeed = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
-        const seed = (tractSeed * year * 31) % 1000
+        const tractChar = tractSeed % 7  // 0–6, fixed per tract across all years
+        const isCoolingTract = tractChar === 0  // ~1 in 7 tracts gets greening benefit
 
-        // Randomized per-tract character: most tracts get worse, ~15% get a cooling benefit
-        const tractChar = tractSeed % 7   // 0–6, stable per tract
-        const isCoolingTract = tractChar === 0  // ~1 in 7 tracts gets urban-greening improvement
+        // Per-tract upward bias: stable per-tract, grows monotonically, max +12% by 2050.
+        // Wide range creates visible spread between tracts without oscillation.
+        const tractBias = ((tractSeed % 100) / 100) * 0.12 * curve
 
-        // Noise: ±0.06 at 2025, ±0.14 at 2050
-        const noiseRange = 0.06 + yearFraction * 0.08
-        const noise = ((seed % 100) / 100 - 0.5) * 2 * noiseRange
+        // Continuous per-tract growth factor: base tier + stable random jitter (0 to +0.40).
+        // This gives each tract a unique heating rate rather than snapping to 3 buckets.
+        const baseRiskFactor = risk >= p75 ? 0.90 : risk >= median ? 0.52 : 0.20
+        const tractJitter = ((tractSeed % 60) / 60) * 0.40  // 0–0.40, fixed per tract
+        const factor = baseRiskFactor + tractJitter
 
         let newRisk: number
         if (isCoolingTract && risk < median) {
-          // Slight improvement: low-risk tracts that benefit from interventions
-          newRisk = risk - yearFraction * 0.08 * ((seed % 40) / 40) + noise * 0.5
+          // Cooling tracts vary in how much they improve (some more policy-responsive)
+          newRisk = risk - curve * 0.10 * ((tractSeed % 40) / 40)
         } else {
           const delta = risk - median
-          // High-risk (above p75): very aggressive growth
-          // Mid-risk (median–p75): moderate growth
-          // Low-risk (below median): slow growth
-          const factor = risk >= p75 ? 0.9 : risk >= median ? 0.5 : 0.2
-          newRisk = risk + delta * factor * yearFraction + noise
+          newRisk = risk + delta * factor * curve + tractBias
         }
 
         amplified.set(id, Math.min(1, Math.max(0, newRisk)))

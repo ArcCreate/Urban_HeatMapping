@@ -32,10 +32,10 @@ const staggerItem = {
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 function getHeatLabel(score: number): { label: string; color: string; bg: string } {
-  if (score >= 0.75) return { label: 'Extreme Heat',  color: '#F44336', bg: 'rgba(244,67,54,0.15)' }
-  if (score >= 0.5)  return { label: 'High Heat',     color: '#FF5722', bg: 'rgba(255,87,34,0.15)' }
-  if (score >= 0.25) return { label: 'Moderate Heat', color: '#FFC107', bg: 'rgba(255,193,7,0.15)' }
-  return                      { label: 'Low Heat',    color: '#4CAF50', bg: 'rgba(76,175,80,0.15)' }
+  if (score >= 0.85) return { label: 'Extreme Heat',  color: '#FF5722', bg: 'rgba(255,87,34,0.18)' }
+  if (score >= 0.66) return { label: 'High Heat',     color: '#FB8C00', bg: 'rgba(251,140,0,0.18)' }
+  if (score >= 0.33) return { label: 'Moderate Heat', color: '#FFC107', bg: 'rgba(255,193,7,0.18)' }
+  return                      { label: 'Low Heat',    color: '#66BB6A', bg: 'rgba(102,187,106,0.18)' }
 }
 
 function getZoning(imperv: number | null): string {
@@ -253,7 +253,7 @@ function SidebarInterventionCard({ item }: { item: Intervention }) {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '3px' }}>
         <item.Icon size={13} style={{ color: bar, flexShrink: 0 }} />
-        <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.78rem', color: '#E5E7EB' }}>
+        <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.78rem', color: '#E8EBF2' }}>
           {item.title}
         </div>
         <span style={{
@@ -264,7 +264,7 @@ function SidebarInterventionCard({ item }: { item: Intervention }) {
           {item.priority}
         </span>
       </div>
-      <div style={{ fontSize: '0.67rem', color: 'rgba(229,231,235,0.5)', lineHeight: 1.55, paddingLeft: '20px' }}>
+      <div style={{ fontSize: '0.67rem', color: 'rgba(232,235,242,0.55)', lineHeight: 1.55, paddingLeft: '20px' }}>
         {item.detail}
       </div>
     </div>
@@ -287,7 +287,7 @@ function RegionCard({ city, tracts, onClick }: RegionCardProps) {
       onClick={onClick}
       style={{
         display: 'block', width: '100%', textAlign: 'left',
-        background: 'rgba(255,255,255,0.03)',
+        background: '#1C1F2A',
         border: '1px solid rgba(255,255,255,0.07)',
         borderRadius: '8px',
         padding: '10px 12px',
@@ -297,24 +297,24 @@ function RegionCard({ city, tracts, onClick }: RegionCardProps) {
       }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLElement
-        el.style.background = 'rgba(255,255,255,0.06)'
-        el.style.borderColor = 'rgba(255,255,255,0.14)'
+        el.style.background = '#252836'
+        el.style.borderColor = 'rgba(255,255,255,0.13)'
       }}
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLElement
-        el.style.background = 'rgba(255,255,255,0.03)'
+        el.style.background = '#1C1F2A'
         el.style.borderColor = 'rgba(255,255,255,0.07)'
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px' }}>
-            <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.88rem', color: '#E5E7EB' }}>
+            <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.88rem', color: '#E8EBF2' }}>
               {city}
             </div>
             <span style={{
               background: heat.bg, color: heat.color,
-              border: `1px solid ${heat.color}44`,
+              border: `1px solid ${heat.color}55`,
               borderRadius: '20px', padding: '1px 8px',
               fontSize: '0.65rem', fontWeight: 600,
             }}>
@@ -322,15 +322,15 @@ function RegionCard({ city, tracts, onClick }: RegionCardProps) {
             </span>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.72rem', color: 'rgba(229,231,235,0.45)' }}>
+            <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.72rem', color: 'rgba(232,235,242,0.45)' }}>
               {tracts.length} zone{tracts.length !== 1 ? 's' : ''}
             </span>
-            <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.72rem', color: 'rgba(229,231,235,0.45)' }}>
+            <span style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.72rem', color: 'rgba(232,235,242,0.45)' }}>
               Risk {(avgRisk * 10).toFixed(1)}/10
             </span>
           </div>
         </div>
-        <ChevronRight size={14} style={{ color: 'rgba(229,231,235,0.3)', flexShrink: 0, marginLeft: '8px' }} />
+        <ChevronRight size={14} style={{ color: 'rgba(232,235,242,0.25)', flexShrink: 0, marginLeft: '8px' }} />
       </div>
     </button>
   )
@@ -350,15 +350,15 @@ function ZoneCard({ tract, isActive, onClick }: ZoneCardProps) {
       onClick={onClick}
       style={{
         display: 'block', width: '100%', textAlign: 'left',
-        background: isActive ? 'rgba(0,191,165,0.08)' : 'transparent',
-        borderLeft: isActive ? '2px solid #00BFA5' : '2px solid transparent',
+        background: isActive ? 'rgba(255,107,107,0.10)' : 'transparent',
+        borderLeft: isActive ? '2px solid #FF6B6B' : '2px solid transparent',
         borderRadius: '0 8px 8px 0',
         padding: '9px 12px',
         cursor: 'pointer',
         transition: 'background 0.15s',
       }}
       onMouseEnter={(e) => {
-        if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)'
+        if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'
       }}
       onMouseLeave={(e) => {
         if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent'
@@ -366,19 +366,19 @@ function ZoneCard({ tract, isActive, onClick }: ZoneCardProps) {
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 600, fontSize: '0.83rem', color: '#E5E7EB', marginBottom: '2px' }}>
+          <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 600, fontSize: '0.83rem', color: '#E8EBF2', marginBottom: '2px' }}>
             {formatCensusTract(tract.tract_id)}
             {isActive && (
               <span style={{
                 marginLeft: '7px',
-                background: 'rgba(76,175,80,0.2)', color: '#4CAF50',
+                background: 'rgba(76,175,80,0.18)', color: '#4CAF50',
                 border: '1px solid rgba(76,175,80,0.35)',
                 borderRadius: '10px', padding: '0 6px',
                 fontSize: '0.6rem', fontWeight: 600,
               }}>Active</span>
             )}
           </div>
-          <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.7rem', color: 'rgba(229,231,235,0.35)' }}>
+          <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '0.7rem', color: 'rgba(232,235,242,0.38)' }}>
             {tract.tract_id}
           </div>
         </div>
@@ -427,28 +427,51 @@ export function LeftSidebar() {
     }))
   )
 
-  // When a tract is selected (e.g. via map click), auto-navigate sidebar to its city
+  // When a tract is selected (e.g. via map click), auto-navigate sidebar to its group.
+  // Named-city tracts navigate to the city group; unincorporated tracts navigate to
+  // their individual group (keyed by formatted tract name).
   useEffect(() => {
-    if (tractDetail?.city_name) {
-      setSelectedRegion(tractDetail.city_name)
+    if (!tractDetail) return
+    if (tractDetail.city_name?.trim()) {
+      setSelectedRegion(tractDetail.city_name.trim())
+    } else {
+      setSelectedRegion(formatCensusTract(tractDetail.tract_id))
     }
-  }, [tractDetail?.city_name])
+  }, [tractDetail?.city_name, tractDetail?.tract_id])
 
-  // Group ranked tracts by city_name
+  // Group ranked tracts by city_name.
+  // Tracts with no city each become their own group so averages are never
+  // polluted by unrelated unincorporated tracts.
   const cityGroups = useMemo(() => {
-    const groups: Record<string, RankedTract[]> = {}
+    const namedGroups: Record<string, RankedTract[]> = {}
+    const soloTracts: RankedTract[] = []
+
     for (const t of rankedTracts) {
-      const city = t.city_name?.trim() || 'Unincorporated'
-      if (!groups[city]) groups[city] = []
-      groups[city].push(t)
+      const city = t.city_name?.trim()
+      if (city) {
+        if (!namedGroups[city]) namedGroups[city] = []
+        namedGroups[city].push(t)
+      } else {
+        soloTracts.push(t)
+      }
     }
-    return Object.entries(groups)
-      .map(([city, tracts]) => ({
-        city,
-        tracts,
-        avgHeat: tracts.reduce((s, t) => s + t.display_risk, 0) / tracts.length,
-      }))
-      .sort((a, b) => b.avgHeat - a.avgHeat)
+
+    const named = Object.entries(namedGroups).map(([city, tracts]) => ({
+      city,
+      tracts,
+      avgHeat: tracts.reduce((s, t) => s + t.display_risk, 0) / tracts.length,
+      isUnincorporated: false,
+    }))
+
+    // Each unincorporated tract is its own entry; key = formatted name (unique)
+    const solo = soloTracts.map((t) => ({
+      city: formatCensusTract(t.tract_id),
+      tracts: [t],
+      avgHeat: t.display_risk,
+      isUnincorporated: true,
+    }))
+
+    return [...named, ...solo].sort((a, b) => b.avgHeat - a.avgHeat)
   }, [rankedTracts])
 
   // Filter cities or zones based on search
@@ -475,11 +498,25 @@ export function LeftSidebar() {
   function handleRegionClick(city: string) {
     setSearch('')
     setSelectedRegion(city)
-    setSelectedCityName(city)
-    // Zoom map to encompass all tracts in this city
-    const bbox = getCityBbox(geojsonData, city)
-    if (bbox) {
-      mapRef.current?.fitBounds(bbox, { padding: 48, maxZoom: 12, duration: 1000, essential: true })
+
+    const group = cityGroups.find((g) => g.city === city)
+
+    if (group?.isUnincorporated) {
+      // Solo unincorporated tract — no city highlight, zoom + auto-select the tract
+      setSelectedCityName(null)
+      const tract = group.tracts[0]
+      const bbox = getTractBbox(geojsonData, tract.tract_id)
+      if (bbox) {
+        mapRef.current?.fitBounds(bbox, { padding: 80, maxZoom: 11, duration: 1000, essential: true })
+      }
+      handleZoneClick(tract)
+    } else {
+      // Named city — zoom to encompass all tracts
+      setSelectedCityName(city)
+      const bbox = getCityBbox(geojsonData, city)
+      if (bbox) {
+        mapRef.current?.fitBounds(bbox, { padding: 48, maxZoom: 12, duration: 1000, essential: true })
+      }
     }
   }
 
@@ -541,14 +578,16 @@ export function LeftSidebar() {
     : null
   const treeCovColor = treeCovScore == null ? '#888' : treeCovScore >= 7 ? '#4CAF50' : treeCovScore >= 4 ? '#FFC107' : '#F44336'
   const zoning = getZoning(tractDetail?.mean_imperv ?? null)
+  const isUnincorporatedView = selectedRegion != null &&
+    (cityGroups.find((g) => g.city === selectedRegion)?.isUnincorporated ?? false)
 
   return (
     <div style={{
       height: '100%', display: 'flex', flexDirection: 'column',
-      background: '#222222', fontFamily: '"IBM Plex Sans", sans-serif',
+      background: '#111318', fontFamily: '"IBM Plex Sans", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ padding: '16px 16px 8px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
+      <div style={{ padding: '16px 16px 8px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
           {selectedRegion ? (
             <button
@@ -556,7 +595,7 @@ export function LeftSidebar() {
               style={{
                 background: 'none', border: 'none', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', gap: '5px',
-                color: '#00BFA5', fontSize: '0.8rem', fontWeight: 600,
+                color: '#FF6B6B', fontSize: '0.8rem', fontWeight: 600,
                 fontFamily: '"IBM Plex Sans", sans-serif', padding: 0,
               }}
             >
@@ -564,11 +603,11 @@ export function LeftSidebar() {
               Regions
             </button>
           ) : (
-            <Layers size={14} style={{ color: 'rgba(229,231,235,0.4)' }} />
+            <Layers size={14} style={{ color: 'rgba(232,235,242,0.30)' }} />
           )}
           <h2 style={{
             fontFamily: '"DM Sans", sans-serif', fontWeight: 700,
-            fontSize: '0.95rem', color: '#E5E7EB', margin: 0,
+            fontSize: '0.95rem', color: '#E8EBF2', margin: 0,
           }}>
             {selectedRegion ?? 'Regions'}
           </h2>
@@ -576,16 +615,16 @@ export function LeftSidebar() {
 
         {/* Search */}
         <div style={{ position: 'relative' }}>
-          <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(229,231,235,0.4)' }} />
+          <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(232,235,242,0.35)' }} />
           <input
             type="text"
             placeholder={selectedRegion ? 'Search zones...' : 'Search cities...'}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
-              width: '100%', background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px',
-              padding: '7px 10px 7px 30px', color: '#E5E7EB', fontSize: '0.8rem',
+              width: '100%', background: '#1C1F2A',
+              border: '1px solid rgba(255,255,255,0.09)', borderRadius: '8px',
+              padding: '7px 10px 7px 30px', color: '#E8EBF2', fontSize: '0.8rem',
               outline: 'none', fontFamily: '"IBM Plex Sans", sans-serif',
               boxSizing: 'border-box',
             }}
@@ -606,8 +645,8 @@ export function LeftSidebar() {
                 ))
               ) : (
                 <>
-                  <div style={{ padding: '2px 2px 8px', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.09em', color: 'rgba(229,231,235,0.28)' }}>
-                    {filteredRegions.length} {filteredRegions.length === 1 ? 'CITY' : 'CITIES'}
+                  <div style={{ padding: '2px 2px 8px', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.09em', color: 'rgba(232,235,242,0.35)' }}>
+                    {filteredRegions.length} {filteredRegions.length === 1 ? 'REGION' : 'REGIONS'}
                   </div>
                   <motion.div variants={staggerList} initial="hidden" animate="visible">
                     {filteredRegions.map((g) => (
@@ -632,24 +671,24 @@ export function LeftSidebar() {
               {/* City overview card */}
               <div style={{
                 margin: '10px 10px 0',
-                background: 'rgba(0,191,165,0.06)',
-                border: '1px solid rgba(0,191,165,0.18)',
+                background: 'rgba(255,107,107,0.07)',
+                border: '1px solid rgba(255,107,107,0.20)',
                 borderRadius: '10px',
                 padding: '12px 14px',
               }}>
                 {/* City name */}
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '8px' }}>
-                  <MapPin size={13} style={{ color: '#00BFA5', marginTop: '2px', flexShrink: 0 }} />
+                  <MapPin size={13} style={{ color: '#FF6B6B', marginTop: '2px', flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
                       fontFamily: '"DM Sans", sans-serif', fontWeight: 700,
-                      fontSize: '0.92rem', color: '#E5E7EB', marginBottom: '2px',
+                      fontSize: '0.92rem', color: '#E8EBF2', marginBottom: '2px',
                       whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                     }}>
                       {selectedRegion}
                     </div>
-                    <div style={{ fontSize: '0.68rem', color: 'rgba(229,231,235,0.38)', fontFamily: '"IBM Plex Mono", monospace' }}>
-                      {regionTracts.length} zones · King County, WA
+                    <div style={{ fontSize: '0.68rem', color: 'rgba(232,235,242,0.45)', fontFamily: '"IBM Plex Mono", monospace' }}>
+                      {isUnincorporatedView ? 'Unincorporated · King County, WA' : `${regionTracts.length} zones · King County, WA`}
                     </div>
                   </div>
                 </div>
@@ -658,7 +697,7 @@ export function LeftSidebar() {
                 <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap', marginBottom: '10px' }}>
                   <span style={{
                     background: heatBadge.bg, color: heatBadge.color,
-                    border: `1px solid ${heatBadge.color}44`,
+                    border: `1px solid ${heatBadge.color}55`,
                     borderRadius: '20px', padding: '2px 9px',
                     fontSize: '0.67rem', fontWeight: 600,
                   }}>
@@ -666,8 +705,8 @@ export function LeftSidebar() {
                   </span>
                   {!isTractDetailLoading && tractDetail && (
                     <span style={{
-                      background: 'rgba(255,255,255,0.06)', color: 'rgba(229,231,235,0.55)',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      background: 'rgba(255,255,255,0.07)', color: 'rgba(232,235,242,0.65)',
+                      border: '1px solid rgba(255,255,255,0.12)',
                       borderRadius: '20px', padding: '2px 9px',
                       fontSize: '0.67rem', fontWeight: 600,
                     }}>
@@ -679,22 +718,22 @@ export function LeftSidebar() {
                 {/* Risk + tree cover tiles */}
                 <div style={{ display: 'flex', gap: '7px', marginBottom: '10px' }}>
                   <div style={{
-                    flex: 1, background: 'rgba(0,229,255,0.07)',
-                    border: '1px solid rgba(0,229,255,0.14)',
+                    flex: 1, background: 'rgba(255,107,107,0.08)',
+                    border: '1px solid rgba(255,107,107,0.20)',
                     borderRadius: '7px', padding: '7px 10px', textAlign: 'center',
                   }}>
-                    <div style={{ fontSize: '0.57rem', letterSpacing: '0.08em', color: 'rgba(229,231,235,0.32)', marginBottom: '2px' }}>RISK</div>
-                    <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontWeight: 700, fontSize: '1rem', color: '#00E5FF', lineHeight: 1 }}>
+                    <div style={{ fontSize: '0.57rem', letterSpacing: '0.08em', color: 'rgba(232,235,242,0.38)', marginBottom: '2px' }}>RISK</div>
+                    <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontWeight: 700, fontSize: '1rem', color: '#FF6B6B', lineHeight: 1 }}>
                       {avgRisk != null ? avgRisk.toFixed(1) : '—'}
                     </div>
-                    <div style={{ fontSize: '0.57rem', color: 'rgba(229,231,235,0.28)', marginTop: '2px' }}>out of 10</div>
+                    <div style={{ fontSize: '0.57rem', color: 'rgba(232,235,242,0.38)', marginTop: '2px' }}>out of 10</div>
                   </div>
                   <div style={{
-                    flex: 1, background: 'rgba(255,255,255,0.04)',
+                    flex: 1, background: '#1C1F2A',
                     border: '1px solid rgba(255,255,255,0.08)',
                     borderRadius: '7px', padding: '7px 10px', textAlign: 'center',
                   }}>
-                    <div style={{ fontSize: '0.57rem', letterSpacing: '0.08em', color: 'rgba(229,231,235,0.32)', marginBottom: '2px' }}>TREE COVER</div>
+                    <div style={{ fontSize: '0.57rem', letterSpacing: '0.08em', color: 'rgba(232,235,242,0.38)', marginBottom: '2px' }}>TREE COVER</div>
                     {isTractDetailLoading ? (
                       <div style={{ height: '16px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', margin: '2px 0' }} />
                     ) : (
@@ -702,7 +741,7 @@ export function LeftSidebar() {
                         {treeCovScore != null ? `${treeCovScore.toFixed(1)}/10` : '—'}
                       </div>
                     )}
-                    <div style={{ fontSize: '0.57rem', color: 'rgba(229,231,235,0.28)', marginTop: '2px' }}>coverage</div>
+                    <div style={{ fontSize: '0.57rem', color: 'rgba(232,235,242,0.38)', marginTop: '2px' }}>coverage</div>
                   </div>
                 </div>
 
@@ -720,8 +759,8 @@ export function LeftSidebar() {
                 const dr = activeRanked?.display_risk ?? 0.5
                 const recs = getInterventions(tractDetail, tcScore, dr)
                 return (
-                  <div style={{ margin: '10px 10px 0', padding: '12px 14px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
-                    <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(229,231,235,0.28)', marginBottom: '10px' }}>
+                  <div style={{ margin: '10px 10px 0', padding: '12px 14px', background: '#1C1F2A', border: '1px solid rgba(255,255,255,0.07)', borderRadius: '10px' }}>
+                    <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(232,235,242,0.38)', marginBottom: '10px' }}>
                       CONTRACTOR RECOMMENDATIONS · {formatCensusTract(selectedTractId ?? '')}
                     </div>
                     {recs.map((item, i) => <SidebarInterventionCard key={i} item={item} />)}
@@ -731,7 +770,7 @@ export function LeftSidebar() {
 
               {/* Sub-zones list */}
               <div style={{ padding: '10px 10px 0' }}>
-                <div style={{ padding: '0 2px 6px', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.09em', color: 'rgba(229,231,235,0.28)' }}>
+                <div style={{ padding: '0 2px 6px', fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.09em', color: 'rgba(232,235,242,0.35)' }}>
                   {zonesInRegion.length} ZONE{zonesInRegion.length !== 1 ? 'S' : ''}
                 </div>
                 <motion.div variants={staggerList} initial="hidden" animate="visible">

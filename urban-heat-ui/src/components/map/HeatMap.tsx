@@ -296,7 +296,7 @@ export function HeatMap() {
               display: 'flex', alignItems: 'center', gap: '7px',
               background: 'none', border: 'none', cursor: 'pointer',
               padding: '7px 14px',
-              color: '#00E5FF',
+              color: '#FF6B6B',
               fontSize: '0.78rem', fontWeight: 600,
               fontFamily: '"IBM Plex Sans", sans-serif',
               whiteSpace: 'nowrap',

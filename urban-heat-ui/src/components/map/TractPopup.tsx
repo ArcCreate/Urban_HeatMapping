@@ -14,11 +14,13 @@ function treeScore(treeCov: number | null, allValues: (number | null)[]): number
   return (vals.filter((v) => v <= treeCov).length / vals.length) * 10
 }
 
+// Thresholds aligned to the map's interpolation stops: [0, 0.33, 0.66, 0.85, 1.0]
+// green → light-green → yellow → orange → deep-red
 function getRiskLevel(score: number): { label: string; color: string } {
-  if (score >= 0.75) return { label: 'Extreme Heat Risk', color: '#F44336' }
-  if (score >= 0.5)  return { label: 'High Heat Risk',    color: '#FF5722' }
-  if (score >= 0.25) return { label: 'Moderate Heat Risk', color: '#FFC107' }
-  return { label: 'Low Heat Risk', color: '#4CAF50' }
+  if (score >= 0.85) return { label: 'Extreme Heat Risk', color: '#FF5722' }
+  if (score >= 0.66) return { label: 'High Heat Risk',    color: '#FB8C00' }
+  if (score >= 0.33) return { label: 'Moderate Heat Risk', color: '#FFC107' }
+  return { label: 'Low Heat Risk', color: '#66BB6A' }
 }
 
 function getZoneType(imperv: number | null): string {
@@ -50,7 +52,7 @@ function getPrimaryDriver(
   const candidates: Array<{ weight: number; label: string; color: string }> = []
 
   if (detail.mean_imperv != null && detail.mean_imperv > 45)
-    candidates.push({ weight: (detail.mean_imperv - 45) / 55, label: 'High Imperviousness', color: '#FF8C00' })
+    candidates.push({ weight: (detail.mean_imperv - 45) / 55, label: 'High Imperviousness', color: '#FB8C00' })
 
   if (treeCovScore != null && treeCovScore < 4)
     candidates.push({ weight: (4 - treeCovScore) / 4, label: 'Low Tree Canopy', color: '#8BC34A' })
@@ -59,7 +61,7 @@ function getPrimaryDriver(
     candidates.push({ weight: (detail.mean_afternoon_temp - 88) / 22, label: 'Extreme Surface Temp', color: '#FF5722' })
 
   if (detail.mean_svi_overall != null && detail.mean_svi_overall > 0.6)
-    candidates.push({ weight: (detail.mean_svi_overall - 0.6) / 0.4, label: 'High Vulnerability', color: '#7C3AED' })
+    candidates.push({ weight: (detail.mean_svi_overall - 0.6) / 0.4, label: 'High Vulnerability', color: '#9C6FE4' })
 
   if (!candidates.length) return null
   candidates.sort((a, b) => b.weight - a.weight)
@@ -77,13 +79,13 @@ interface StatRowProps {
 function StatRow({ label, value, color }: StatRowProps) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '3.5px 0' }}>
-      <span style={{ fontSize: '0.72rem', color: 'rgba(229,231,235,0.45)', fontFamily: '"IBM Plex Sans", sans-serif' }}>
+      <span style={{ fontSize: '0.72rem', color: 'rgba(232,235,242,0.58)', fontFamily: '"IBM Plex Sans", sans-serif' }}>
         {label}
       </span>
       <span style={{
         fontFamily: '"IBM Plex Mono", monospace',
         fontSize: '0.75rem', fontWeight: 600,
-        color: color ?? '#E5E7EB',
+        color: color ?? '#E8EBF2',
       }}>
         {value}
       </span>
@@ -115,10 +117,10 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
 
   const allTreeVals = rankedTracts.map((t) => t.mean_tree_cov)
   const treeCovScore = treeScore(tractDetail?.mean_tree_cov ?? null, allTreeVals)
-  const treeCovColor = treeCovScore == null ? '#888'
-    : treeCovScore >= 7 ? '#4CAF50'
+  const treeCovColor = treeCovScore == null ? 'rgba(232,235,242,0.45)'
+    : treeCovScore >= 7 ? '#66BB6A'
     : treeCovScore >= 4 ? '#FFC107'
-    : '#F44336'
+    : '#FF5722'
 
   const primaryDriver = tractDetail ? getPrimaryDriver(tractDetail, treeCovScore) : null
 
@@ -129,16 +131,16 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
 
   const tempColor = (t: number | null | undefined) => {
     if (t == null) return undefined
-    if (t > 97) return '#F44336'
-    if (t > 90) return '#FF8C00'
-    return '#4CAF50'
+    if (t > 97) return '#FF5722'
+    if (t > 90) return '#FB8C00'
+    return '#66BB6A'
   }
 
   const impervColor = (v: number | null | undefined) => {
     if (v == null) return undefined
-    if (v > 70) return '#F44336'
+    if (v > 70) return '#FF5722'
     if (v > 50) return '#FFC107'
-    return '#4CAF50'
+    return '#66BB6A'
   }
 
   const sviColor = (v: number | null | undefined) => {
@@ -175,14 +177,14 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{
                 fontFamily: '"DM Sans", sans-serif', fontWeight: 700,
-                fontSize: '0.97rem', color: '#E5E7EB', marginBottom: '1px',
+                fontSize: '0.97rem', color: '#E8EBF2', marginBottom: '1px',
               }}>
                 {tractDetail?.city_name
                   ? `${tractDetail.city_name} · ${tractLabel}`
                   : tractLabel}
               </div>
               <div style={{
-                fontSize: '0.62rem', color: 'rgba(229,231,235,0.3)',
+                fontSize: '0.62rem', color: 'rgba(232,235,242,0.45)',
                 fontFamily: '"IBM Plex Mono", monospace',
               }}>
                 King County, WA · {popupInfo.tractId}
@@ -192,41 +194,41 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', flexShrink: 0, marginLeft: '10px' }}>
               {/* Display risk tile */}
               <div style={{
-                background: 'rgba(0,229,255,0.1)', border: '1px solid rgba(0,229,255,0.3)',
+                background: 'rgba(255,107,107,0.10)', border: '1px solid rgba(255,107,107,0.25)',
                 borderRadius: '8px', padding: '4px 10px', textAlign: 'center',
               }}>
-                <div style={{ fontSize: '0.52rem', color: 'rgba(229,231,235,0.4)', letterSpacing: '0.06em', fontFamily: '"IBM Plex Mono", monospace' }}>
+                <div style={{ fontSize: '0.52rem', color: 'rgba(232,235,242,0.45)', letterSpacing: '0.06em', fontFamily: '"IBM Plex Mono", monospace' }}>
                   {projectionYear > 2025 ? String(projectionYear) : 'RISK'}
                 </div>
-                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '1rem', fontWeight: 700, color: '#00E5FF', lineHeight: 1.1 }}>
+                <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '1rem', fontWeight: 700, color: '#FF6B6B', lineHeight: 1.1 }}>
                   {normalizedRisk.toFixed(1)}
                 </div>
-                <div style={{ fontSize: '0.52rem', color: 'rgba(229,231,235,0.35)', fontFamily: '"IBM Plex Mono", monospace' }}>/ 10</div>
+                <div style={{ fontSize: '0.52rem', color: 'rgba(232,235,242,0.40)', fontFamily: '"IBM Plex Mono", monospace' }}>/ 10</div>
               </div>
 
               {/* Composite / baseline tile */}
               {compositeRisk != null && (
                 <div style={{
-                  background: 'rgba(255,193,7,0.08)', border: '1px solid rgba(255,193,7,0.22)',
+                  background: 'rgba(255,193,7,0.10)', border: '1px solid rgba(255,193,7,0.25)',
                   borderRadius: '8px', padding: '4px 10px', textAlign: 'center',
                 }}>
-                  <div style={{ fontSize: '0.52rem', color: 'rgba(229,231,235,0.4)', letterSpacing: '0.06em', fontFamily: '"IBM Plex Mono", monospace' }}>
+                  <div style={{ fontSize: '0.52rem', color: 'rgba(232,235,242,0.45)', letterSpacing: '0.06em', fontFamily: '"IBM Plex Mono", monospace' }}>
                     BASE
                   </div>
                   <div style={{ fontFamily: '"IBM Plex Mono", monospace', fontSize: '1rem', fontWeight: 700, color: '#FFC107', lineHeight: 1.1 }}>
                     {(compositeRisk * 10).toFixed(1)}
                   </div>
-                  <div style={{ fontSize: '0.52rem', color: 'rgba(229,231,235,0.35)', fontFamily: '"IBM Plex Mono", monospace' }}>/ 10</div>
+                  <div style={{ fontSize: '0.52rem', color: 'rgba(232,235,242,0.40)', fontFamily: '"IBM Plex Mono", monospace' }}>/ 10</div>
                 </div>
               )}
 
               <button
                 onClick={onClose}
                 style={{
-                  background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)',
                   borderRadius: '6px', width: '26px', height: '26px',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer', color: 'rgba(229,231,235,0.6)', flexShrink: 0,
+                  cursor: 'pointer', color: 'rgba(232,235,242,0.60)', flexShrink: 0,
                 }}
               >
                 <X size={12} />
@@ -238,7 +240,7 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '12px' }}>
             <span style={{
               background: risk.color + '22', color: risk.color,
-              border: `1px solid ${risk.color}44`,
+              border: `1px solid ${risk.color}55`,
               borderRadius: '20px', padding: '2px 10px',
               fontSize: '0.69rem', fontWeight: 600, fontFamily: '"IBM Plex Sans", sans-serif',
             }}>
@@ -246,8 +248,8 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             </span>
             {primaryDriver && (
               <span style={{
-                background: primaryDriver.color + '18', color: primaryDriver.color,
-                border: `1px solid ${primaryDriver.color}33`,
+                background: primaryDriver.color + '20', color: primaryDriver.color,
+                border: `1px solid ${primaryDriver.color}44`,
                 borderRadius: '20px', padding: '2px 10px',
                 fontSize: '0.69rem', fontWeight: 600, fontFamily: '"IBM Plex Sans", sans-serif',
               }}>
@@ -256,8 +258,8 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             )}
             {tractDetail && (
               <span style={{
-                background: 'rgba(255,255,255,0.06)', color: 'rgba(229,231,235,0.5)',
-                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.07)', color: 'rgba(232,235,242,0.65)',
+                border: '1px solid rgba(255,255,255,0.12)',
                 borderRadius: '20px', padding: '2px 10px',
                 fontSize: '0.69rem', fontWeight: 600, fontFamily: '"IBM Plex Sans", sans-serif',
               }}>
@@ -268,11 +270,11 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
 
           {/* ── Loading skeleton ── */}
           {isTractDetailLoading && (
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px' }}>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px' }}>
               {[80, 65, 75, 55, 70, 60].map((w, i) => (
                 <div key={i} style={{
                   height: '13px', width: `${w}%`,
-                  background: 'rgba(255,255,255,0.06)', borderRadius: '4px', marginBottom: '7px',
+                  background: 'rgba(255,255,255,0.08)', borderRadius: '4px', marginBottom: '7px',
                 }} />
               ))}
             </div>
@@ -282,8 +284,8 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
           {!isTractDetailLoading && tractDetail && (
             <>
               {/* ENVIRONMENT */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px', marginBottom: '10px' }}>
-                <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(229,231,235,0.28)', marginBottom: '6px' }}>
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px', marginBottom: '10px' }}>
+                <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(232,235,242,0.38)', marginBottom: '6px' }}>
                   ENVIRONMENT
                 </div>
                 <StatRow
@@ -309,8 +311,8 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
               </div>
 
               {/* HEALTH */}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '10px' }}>
-                <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(229,231,235,0.28)', marginBottom: '6px' }}>
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '10px' }}>
+                <div style={{ fontSize: '0.58rem', fontWeight: 700, letterSpacing: '0.1em', color: 'rgba(232,235,242,0.38)', marginBottom: '6px' }}>
                   HEALTH & VULNERABILITY
                 </div>
                 <StatRow label="Life Expectancy" value={fmt(tractDetail.mean_life_expectancy, 1, ' yrs')} />

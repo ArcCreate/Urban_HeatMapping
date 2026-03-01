@@ -39,13 +39,13 @@ export function ChatInput({ onSend, disabled }: Props) {
     <div style={{
       padding: '10px 12px 12px',
       borderTop: '1px solid rgba(255,255,255,0.07)',
-      background: '#222222',
+      background: '#111318',
       flexShrink: 0,
     }}>
       <div style={{
         display: 'flex', gap: '8px', alignItems: 'flex-end',
-        background: 'rgba(255,255,255,0.05)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: '#1C1F2A',
+        border: '1px solid rgba(255,255,255,0.09)',
         borderRadius: '12px', padding: '8px 10px',
       }}>
         <textarea
@@ -59,7 +59,7 @@ export function ChatInput({ onSend, disabled }: Props) {
           rows={1}
           style={{
             flex: 1, background: 'none', border: 'none', outline: 'none',
-            color: '#E5E7EB', fontSize: '0.82rem', resize: 'none',
+            color: '#E8EBF2', fontSize: '0.82rem', resize: 'none',
             fontFamily: '"IBM Plex Sans", sans-serif',
             lineHeight: '1.45', maxHeight: '120px', overflowY: 'auto',
           }}
@@ -69,8 +69,8 @@ export function ChatInput({ onSend, disabled }: Props) {
           disabled={!canSend}
           style={{
             width: '32px', height: '32px', borderRadius: '50%',
-            background: canSend ? '#00E5FF' : 'rgba(255,255,255,0.08)',
-            color: canSend ? '#1A1A1A' : 'rgba(229,231,235,0.25)',
+            background: canSend ? '#FF6B6B' : 'rgba(255,255,255,0.10)',
+            color: canSend ? '#FFFFFF' : 'rgba(232,235,242,0.30)',
             border: 'none', cursor: canSend ? 'pointer' : 'default',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0, transition: 'background 0.15s, color 0.15s',

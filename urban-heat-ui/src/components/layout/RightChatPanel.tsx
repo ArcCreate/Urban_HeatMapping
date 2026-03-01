@@ -30,18 +30,15 @@ export function RightChatPanel() {
 
   const { containerRef, endRef } = useChatScroll(messages)
 
-  // Reactively sync full tract data into chat context whenever selection or detail changes
   useEffect(() => {
     if (!selectedTractId) {
       updateMapContext({ selected_tract_ids: [], current_scores: {}, tract_data: [] })
       return
     }
-    // Tract selected but detail not yet loaded (or stale from previous selection)
     if (!tractDetail || tractDetail.tract_id !== selectedTractId) {
       updateMapContext({ selected_tract_ids: [selectedTractId], current_scores: {}, tract_data: [] })
       return
     }
-    // Full data available — pass everything to the backend
     updateMapContext({
       selected_tract_ids: [selectedTractId],
       current_scores: {
@@ -93,21 +90,21 @@ export function RightChatPanel() {
   return (
     <div style={{
       height: '100%', display: 'flex', flexDirection: 'column',
-      background: '#222222', fontFamily: '"IBM Plex Sans", sans-serif',
+      background: '#111318', fontFamily: '"IBM Plex Sans", sans-serif',
     }}>
       {/* Header */}
-      <div style={{ padding: '14px 16px 10px', borderBottom: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
+      <div style={{ padding: '14px 16px 10px', borderBottom: '1px solid rgba(255,255,255,0.07)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
             width: '34px', height: '34px', borderRadius: '50%',
-            background: 'rgba(124,58,237,0.15)', border: '1px solid rgba(124,58,237,0.35)',
+            background: 'rgba(255,107,107,0.12)', border: '1px solid rgba(255,107,107,0.30)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
-            <Bot size={17} color="#7C3AED" />
+            <Bot size={17} color="#FF6B6B" />
           </div>
           <div>
-            <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#E5E7EB' }}>
-              UrbanAI Assistant
+            <div style={{ fontFamily: '"DM Sans", sans-serif', fontWeight: 700, fontSize: '0.9rem', color: '#E8EBF2' }}>
+              OASIS Assistant
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4CAF50', display: 'inline-block' }} />
@@ -117,8 +114,8 @@ export function RightChatPanel() {
           {selectedCount > 0 && (
             <div style={{
               marginLeft: 'auto',
-              background: 'rgba(0,229,255,0.08)', color: '#00E5FF',
-              border: '1px solid rgba(0,229,255,0.2)',
+              background: 'rgba(255,107,107,0.10)', color: '#FF6B6B',
+              border: '1px solid rgba(255,107,107,0.25)',
               borderRadius: '12px', padding: '2px 9px',
               fontSize: '0.67rem', fontWeight: 600, flexShrink: 0,
             }}>
@@ -152,15 +149,15 @@ export function RightChatPanel() {
           >
             <div style={{
               width: '28px', height: '28px', borderRadius: '50%',
-              background: 'rgba(124,58,237,0.2)', border: '1px solid rgba(124,58,237,0.3)',
+              background: 'rgba(255,107,107,0.12)', border: '1px solid rgba(255,107,107,0.28)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <Bot size={14} color="#7C3AED" />
+              <Bot size={14} color="#FF6B6B" />
             </div>
             <div style={{
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
+              background: '#1C1F2A', border: '1px solid rgba(255,255,255,0.08)',
               borderRadius: '4px 12px 12px 12px', padding: '10px 14px',
-              color: 'rgba(229,231,235,0.45)', fontSize: '0.8rem',
+              color: 'rgba(232,235,242,0.50)', fontSize: '0.8rem',
               fontFamily: '"IBM Plex Sans", sans-serif',
             }}>
               Querying dataset...

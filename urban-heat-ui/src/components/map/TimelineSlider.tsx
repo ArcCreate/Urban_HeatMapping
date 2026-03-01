@@ -83,7 +83,7 @@ export function TimelineSlider() {
           <Clock size={14} color="rgba(229,231,235,0.5)" />
           <span style={{
             fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.08em',
-            color: 'rgba(229,231,235,0.5)', fontFamily: '"IBM Plex Mono", monospace',
+            color: 'rgba(232,235,242,0.50)', fontFamily: '"IBM Plex Mono", monospace',
             whiteSpace: 'nowrap',
           }}>
             {localYear === 2025 ? 'BASELINE 2025' : 'PROJECTION'}

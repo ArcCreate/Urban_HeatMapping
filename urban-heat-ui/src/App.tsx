@@ -8,12 +8,12 @@ export default function App() {
   useTractData()
 
   return (
-    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: '#1A1A1A' }}>
+    <div className="h-screen w-screen flex flex-col overflow-hidden" style={{ background: '#111318' }}>
       <AppHeader />
       <div className="flex flex-1 overflow-hidden">
         <aside
-          className="shrink-0 border-r border-white/10 overflow-hidden"
-          style={{ width: '280px' }}
+          className="shrink-0 overflow-hidden"
+          style={{ width: '280px', borderRight: '1px solid rgba(255,255,255,0.08)' }}
         >
           <LeftSidebar />
         </aside>
@@ -21,8 +21,8 @@ export default function App() {
           <HeatMap />
         </main>
         <aside
-          className="shrink-0 border-l border-white/10 overflow-hidden flex flex-col"
-          style={{ width: '340px' }}
+          className="shrink-0 overflow-hidden flex flex-col"
+          style={{ width: '340px', borderLeft: '1px solid rgba(255,255,255,0.08)' }}
         >
           <RightChatPanel />
         </aside>

@@ -39,7 +39,20 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #1A1A1A;
+  background-color: #111318;
   font-family: "IBM Plex Sans", sans-serif;
-  color: #E5E7EB;
+  color: #E8EBF2;
 }
+
+::placeholder {
+  color: rgba(232, 235, 242, 0.35);
+}
+
+/* Dark scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.12) transparent;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
