@@ -28,7 +28,7 @@ Full archive: `.planning/milestones/v1.0-ROADMAP.md`
 | 3. Simulation Engine | v1.0 | 2/2 | Complete | 2026-03-01 |
 | 4. Chat Endpoint | v1.0 | 1/1 | Complete | 2026-03-01 |
 | 5. Heat Map Dashboard UI | 4/4 | Complete   | 2026-03-01 | — |
-| 6. Composite Risk Score & Climate Projections | 3/4 | In Progress|  |
+| 6. Composite Risk Score & Climate Projections | 4/4 | Complete   | 2026-03-01 |
 
 ### Phase 5: Heat Map Dashboard UI
 
@@ -48,7 +48,7 @@ Plans:
 **Goal:** Replace the placeholder CSV-derived scores in DuckDB with a transparent, formula-based composite risk score column computed from the full HeatHealthKC.csv dataset (afternoon temp, tree cover, imperviousness, health burdens, social vulnerability, population density, distance to water, heat mapping coverage, HRA data, life expectancy, climate-change-disadvantaged flags, clean energy disadvantaged, and housing burden) — and train a TensorFlow model to produce tract-level heat risk projections for years 2025–2050, wired to the existing frontend timeline slider so the heatmap updates dynamically as the user scrubs through time.
 **Requirements**: REQ-6.1, REQ-6.2, REQ-6.3, REQ-6.4, REQ-6.5
 **Depends on:** Phase 5
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 
 Sub-goals:
 1. **Composite score (DuckDB)** — New `composite_risk` column in `tract_outputs_with_preds` computed as a documented weighted formula across all relevant data columns; weights are explicit, justified, and tunable; no ML involved.
