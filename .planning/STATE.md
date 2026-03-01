@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T00:18:06.779Z"
+last_updated: "2026-03-01T00:22:05.710Z"
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 9
-  completed_plans: 8
+  completed_plans: 9
 ---
 
 # Project State
@@ -22,10 +22,10 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 
 ## Current Position
 
-Phase: 3 of 4 (Simulation Engine) — IN PROGRESS
-Plan: 1 of 2 in current phase — COMPLETE
-Status: Phase 3 Plan 1 complete — Pydantic simulation schemas and parametric formula service (SIM-01, SIM-02)
-Last activity: 2026-03-01 — Completed 03-01: simulation schemas (6 Pydantic types), parametric service with BETA constants
+Phase: 3 of 4 (Simulation Engine) — COMPLETE
+Plan: 2 of 2 in current phase — COMPLETE
+Status: Phase 3 complete — Simulation router (POST /what-if, POST /compare) wired and 12 integration tests passing
+Last activity: 2026-02-28 — Completed 03-02: simulation router, main.py wiring, 12 integration tests (SIM-01, SIM-02)
 
 Progress: [██████████] 100%
 
@@ -53,6 +53,7 @@ Progress: [██████████] 100%
 | Phase 02-data-endpoints P03 | 3 | 2 tasks | 5 files |
 | Phase 02-data-endpoints P05 | 8 | 2 tasks | 7 files |
 | Phase 03-simulation-engine P01 | 2 | 2 tasks | 2 files |
+| Phase 03-simulation-engine P02 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,8 @@ Recent decisions affecting current work:
 - [Phase 03-simulation-engine]: simulate_compare calls _compute_simulation twice independently — 404 from scenario_a propagates, no separate pre-validation pass needed
 - [Phase 03-simulation-engine]: TEMP_NULL_FALLBACK_F = 85.0 — prevents division-by-zero in risk delta formula when mean_afternoon_temp is NULL
 - [Phase 03-simulation-engine]: BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 — coefficients from Seattle canopy research, Scientific Reports 2024, Manchester/Adama City urban studies
+- [Phase 03-simulation-engine]: def (not async def) handlers in simulations router — DuckDB is synchronous, consistent with Phase 2 router pattern; FastAPI dispatches to threadpool
+- [Phase 03-simulation-engine]: Idempotent router registration guard in test file — hasattr(r, 'path') and '/simulations' in path prevents duplicate route registration
 
 ### Pending Todos
 
@@ -102,6 +105,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-01
-Stopped at: Completed 03-01-PLAN.md — Pydantic simulation schemas and parametric formula service; Phase 3 Plan 1 complete
+Last session: 2026-02-28
+Stopped at: Completed 03-02-PLAN.md — Simulation router, main.py wiring, 12 integration tests; Phase 3 complete
 Resume file: None
