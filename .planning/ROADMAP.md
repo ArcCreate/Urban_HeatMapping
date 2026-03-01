@@ -3,6 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-4 (shipped 2026-03-01)
+- 🔄 **v1.1** — Phase 5 (in progress)
 
 ## Phases
 
@@ -26,3 +27,14 @@ Full archive: `.planning/milestones/v1.0-ROADMAP.md`
 | 2. Data Endpoints | v1.0 | 5/5 | Complete | 2026-02-28 |
 | 3. Simulation Engine | v1.0 | 2/2 | Complete | 2026-03-01 |
 | 4. Chat Endpoint | v1.0 | 1/1 | Complete | 2026-03-01 |
+| 5. Heat Map Dashboard UI | v1.1 | 0/? | Planned | — |
+
+### Phase 5: Heat Map Dashboard UI
+
+**Goal:** Build a React frontend with an interactive King County heat-risk heatmap, clickable tract selection with construction-suitability stats, an AI chat panel (right), and a location focus/search panel (left) — enabling city planners to visually identify best/worst construction sites by heat risk.
+**Requirements**: REQ-5.1, REQ-5.2, REQ-5.3, REQ-5.4, REQ-5.5
+**Depends on:** Phase 4
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 5 to break down)

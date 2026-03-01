@@ -97,6 +97,10 @@ Recent decisions affecting current work:
 - [Phase 04-chat-endpoint]: Compact per-tract format (h=, rx=, rt=) keeps 50-tract prompt under 3000 chars; verbose format exceeded limit (3407 chars)
 - [Phase 04-chat-endpoint]: System prompt budget: enumerate <= 50 tracts with IDs+scores; summarize > 50 with min/max/mean statistics
 
+### Roadmap Evolution
+
+- Phase 5 added: Heat Map Dashboard UI — React frontend with interactive heatmap, tract selection/stats, AI chat panel, and location focus panel (v1.1)
+
 ### Pending Todos
 
 None.
