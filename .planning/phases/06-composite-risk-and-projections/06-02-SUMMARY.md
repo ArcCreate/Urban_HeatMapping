@@ -126,6 +126,17 @@ None - no external service configuration required.
 - Model artifacts in models/tf_projection.keras and models/tf_projection_norm.npy (not in git; regenerate by running scripts)
 - Scripts are idempotent and documented with PREREQUISITE, USAGE, OUTPUT in docstrings
 
+## Self-Check: PASSED
+
+- scripts/train_projection.py: FOUND
+- scripts/build_projections.py: FOUND
+- models/tf_projection.keras: FOUND (disk, gitignored)
+- models/tf_projection_norm.npy: FOUND (disk, gitignored), shape (16,), keys: mean, std
+- tract_projections DuckDB: rows=12792, years=26, tracts=492, risk=[0.2454, 0.9789]
+- Commit 33fa458: FOUND
+- Commit 5db9351: FOUND
+- Commit 051b793: FOUND (docs)
+
 ---
 *Phase: 06-composite-risk-and-projections*
 *Completed: 2026-03-01*
