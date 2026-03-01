@@ -20,12 +20,13 @@ Complete guide to train all models and start the full stack from scratch.
 Step 1  →  Create Python environment
 Step 2  →  Build DuckDB (only if king_county.duckdb is missing or corrupted)
 Step 3  →  Train ML models
-Step 4  →  Configure .env
-Step 5  →  Boot the backend API
-Step 6  →  Boot the frontend
+Step 4  →  Compute composite risk scores & climate projections
+Step 5  →  Configure .env
+Step 6  →  Boot the backend API
+Step 7  →  Boot the frontend
 ```
 
-Steps 2–3 are **one-time setup**. Once `king_county.duckdb` and `models/` exist, go straight to Steps 4–6.
+Steps 2–4 are **one-time setup**. Once `king_county.duckdb` and `models/` exist and projections are precomputed, go straight to Steps 5–7.
 
 ---
 
@@ -35,13 +36,13 @@ Steps 2–3 are **one-time setup**. Once `king_county.duckdb` and `models/` exis
 conda create -n urban-heatmap python=3.12 -y
 conda activate urban-heatmap
 
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping   # project root
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping   # project root
 
 pip install -r requirements.txt
 pip install -r scripts/requirements-pipeline.txt
 ```
 
-> `requirements-pipeline.txt` adds `pygris`, `geopandas`, and `shapely` — needed for Steps 2 & 3, not the API server.
+> `requirements-pipeline.txt` adds `pygris`, `geopandas`, and `shapely` — needed for Steps 2–4, not the API server.
 
 ---
 
@@ -52,7 +53,7 @@ pip install -r scripts/requirements-pipeline.txt
 
 ```bash
 conda activate urban-heatmap
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 
 python scripts/build_duckdb.py
 ```
@@ -62,7 +63,7 @@ python scripts/build_duckdb.py
 - Downloads 2020 Census TIGER/Line tract and block geometries for King County via `pygris`
 - Creates `king_county.duckdb` with 3 tables:
   - `tract_features` — 492 tracts, 15 averaged feature columns + WKT geometry
-  - `tract_outputs_with_preds` — 492 tracts, normalized placeholder scores `[0, 1]` (replaced after Step 3)
+  - `tract_outputs_with_preds` — 492 tracts, normalized placeholder scores `[0, 1]` (replaced after Steps 3–4)
   - `blocks` — 25,552 blocks with attributes + WKT geometry
 
 **Expected output:**
@@ -92,7 +93,7 @@ python scripts/build_duckdb.py
 
 ```bash
 conda activate urban-heatmap
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 
 python scripts/train_models.py
 ```
@@ -132,10 +133,43 @@ Saving models...
 
 ---
 
-## Step 4 — Configure Environment Variables
+## Step 4 — Compute Composite Risk Scores & Climate Projections
+
+> **Skip this step if `tract_projections` table already exists** in `king_county.duckdb`.
+> Required for the frontend timeline slider (2025–2050) to work.
+
+Run these three scripts **in order:**
 
 ```bash
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+conda activate urban-heatmap
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
+
+# 4a. Compute formula-based composite_risk column from all 15 feature columns
+python scripts/score_composite.py
+
+# 4b. Train TF projection model on composite_risk + climate-sensitive features
+python scripts/train_projection.py
+
+# 4c. Precompute 2025–2050 projections for all 492 tracts (creates tract_projections table)
+python scripts/build_projections.py
+```
+
+**What each script does:**
+
+| Script | Output |
+|--------|--------|
+| `score_composite.py` | Adds `composite_risk` column to `tract_outputs_with_preds` using weighted formula across thermal, vegetation, health, and social domains |
+| `train_projection.py` | Trains TF model on composite_risk + climate features; saves to `models/projection_model.keras` and `models/projection_scaler.npy` |
+| `build_projections.py` | Precomputes projected risk for all 492 tracts × 26 years (2025–2050); creates `tract_projections` table in DuckDB |
+
+> Total time: **1–3 minutes** depending on hardware.
+
+---
+
+## Step 5 — Configure Environment Variables
+
+```bash
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 cp .env.example .env
 ```
 
@@ -147,23 +181,23 @@ ANTHROPIC_API_KEY=sk-ant-<your-key-here>
 DUCKDB_PATH=king_county.duckdb
 XGB_HEAT_MODEL_PATH=models/xgb_heat.json
 XGB_RISK_MODEL_PATH=models/xgb_risk.json
-TF_RISK_MODEL_PATH=models/tf_risk.keras    # note: .keras extension (not models/tf_risk)
+TF_RISK_MODEL_PATH=models/tf_risk.keras
 
 # macOS arm64 — prevents OpenMP conflict between TF and XGBoost
 OMP_NUM_THREADS=1
 TF_NUM_INTRAOP_THREADS=1
 ```
 
-> **Note:** `.env.example` shows `TF_RISK_MODEL_PATH=models/tf_risk` (without extension).
+> **Note:** `.env.example` has `TF_RISK_MODEL_PATH=models/tf_risk` (missing extension).
 > Use `models/tf_risk.keras` to match the file the training script actually saves.
 
 ---
 
-## Step 5 — Boot the Backend API
+## Step 6 — Boot the Backend API
 
 ```bash
 conda activate urban-heatmap
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
@@ -193,12 +227,12 @@ curl http://localhost:8000/api/v1/health
 
 ---
 
-## Step 6 — Boot the Frontend
+## Step 7 — Boot the Frontend
 
 Open a **second terminal:**
 
 ```bash
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping/urban-heat-ui
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping/urban-heat-ui
 
 npm install        # first time only
 
@@ -215,7 +249,7 @@ npm run dev
 
 Open **http://localhost:5173** in your browser.
 
-The frontend connects to the backend at `http://localhost:8000/api/v1` (set in `urban-heat-ui/vite.config.ts` or via `VITE_API_BASE_URL` in `urban-heat-ui/.env.local`).
+The frontend proxies all `/api` requests to the backend at `http://localhost:8000` via `vite.config.ts` — no extra environment variable needed.
 
 ---
 
@@ -225,7 +259,7 @@ The frontend connects to the backend at `http://localhost:8000/api/v1` (set in `
 # 1. Environment
 conda create -n urban-heatmap python=3.12 -y
 conda activate urban-heatmap
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 pip install -r requirements.txt
 pip install -r scripts/requirements-pipeline.txt
 
@@ -235,14 +269,19 @@ python scripts/build_duckdb.py
 # 3. Train models
 python scripts/train_models.py
 
-# 4. Configure secrets
+# 4. Composite scores + projections (skip if tract_projections table exists)
+python scripts/score_composite.py
+python scripts/train_projection.py
+python scripts/build_projections.py
+
+# 5. Configure secrets
 cp .env.example .env
 # Edit .env: set ANTHROPIC_API_KEY and fix TF_RISK_MODEL_PATH=models/tf_risk.keras
 
-# 5. Boot backend (keep running in this terminal)
+# 6. Boot backend (keep running in this terminal)
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
-# 6. Boot frontend (open a new terminal)
+# 7. Boot frontend (open a new terminal)
 cd urban-heat-ui
 npm install
 npm run dev
@@ -255,11 +294,11 @@ npm run dev
 ```bash
 # Terminal 1 — Backend
 conda activate urban-heatmap
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # Terminal 2 — Frontend
-cd /Users/shrey/Desktop/UrbanPlanning/Urban_HeatMapping/urban-heat-ui
+cd /Users/yashpersonal/Downloads/Urban\ HeatMapping/Urban_HeatMapping/urban-heat-ui
 npm run dev
 ```
 
@@ -272,10 +311,11 @@ npm run dev
 | `FileNotFoundError: models/xgb_heat.json` | Models not trained | Run Step 3 |
 | `FileNotFoundError: models/tf_risk.keras` | Wrong path in `.env` | Set `TF_RISK_MODEL_PATH=models/tf_risk.keras` |
 | `FileNotFoundError: king_county.duckdb` | DB not built | Run Step 2 |
+| Timeline slider shows no data | `tract_projections` table missing | Run Step 4 scripts in order |
 | TensorFlow segfault on startup | Python 3.13 | Use Python 3.12 |
 | XGBoost/TF OpenMP conflict (macOS) | Missing env vars | Add `OMP_NUM_THREADS=1` and `TF_NUM_INTRAOP_THREADS=1` to `.env` |
 | `ANTHROPIC_API_KEY not set` | Missing `.env` | Copy `.env.example` → `.env` and fill in key |
-| Frontend shows no map data | Backend not running | Ensure Step 5 is running on port 8000 |
+| Frontend shows no map data | Backend not running | Ensure Step 6 is running on port 8000 |
 | `pygris` download fails | No internet or Census API down | Retry; block geometry download is ~200 MB |
 
 ---

@@ -4,7 +4,7 @@ Train and save XGBoost + TensorFlow models from king_county.duckdb.
 Outputs:
   models/xgb_heat.json   — XGBoost Booster predicting xgb_heat_score
   models/xgb_risk.json   — XGBoost Booster predicting xgb_risk_score
-  models/tf_risk/        — TF SavedModel predicting tf_risk_score
+  models/tf_risk.keras   — TF Keras model predicting tf_risk_score
 
 Run:
   conda activate urban-heatmap
