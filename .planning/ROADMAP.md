@@ -62,7 +62,11 @@ Plans:
   1. `POST /api/v1/simulations/what-if` with `{tract_ids, interventions: {tree_canopy_pct, albedo_delta, green_space_sqft}}` returns per-tract `{tract_id, delta_temp, delta_risk}` with physically bounded values (no output below absolute zero or above physical maximum)
   2. `POST /api/v1/simulations/compare` with two scenario payloads returns side-by-side per-tract deltas for scenario_a and scenario_b in a single response
   3. Sending an empty `tract_ids` list or a tract ID not present in DuckDB returns a 422 or 404 with the standard `{error, detail, status_code}` shape (not a 500)
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Schemas + service: app/schemas/simulations.py, app/services/simulations.py (parametric formula engine with shared _compute_simulation)
+- [ ] 03-02-PLAN.md — Router + tests + wiring: app/routers/simulations.py, tests/test_simulations.py, app/main.py (SIM-01, SIM-02)
 
 ### Phase 4: Chat Endpoint
 **Goal**: Planners can ask natural-language questions about the heat data currently visible on the map and receive a contextually grounded response from Claude
@@ -83,5 +87,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete   | 2026-02-28 |
 | 2. Data Endpoints | 5/5 | Complete   | 2026-02-28 |
-| 3. Simulation Engine | 0/TBD | Not started | - |
+| 3. Simulation Engine | 0/2 | Not started | - |
 | 4. Chat Endpoint | 0/TBD | Not started | - |
