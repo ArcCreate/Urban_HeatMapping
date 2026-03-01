@@ -5,6 +5,7 @@ export interface PopupInfo {
   xgb_heat_score: number
   xgb_risk_score: number
   tf_risk_score: number
+  display_risk: number
 }
 
 export interface ViewState {

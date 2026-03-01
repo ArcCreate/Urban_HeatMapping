@@ -35,6 +35,11 @@ export interface RankedTract {
   xgb_heat_score: number
   xgb_risk_score: number
   tf_risk_score: number
+  city_name: string | null
+  mean_tree_cov: number | null
+  mean_imperv: number | null
+  mean_afternoon_temp: number | null
+  display_risk: number
 }
 
 export interface CountySummary {

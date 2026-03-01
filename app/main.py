@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
     app.state.models = await asyncio.to_thread(load_models, settings)
 
     logger.info("Startup: initializing Anthropic client...")
-    app.state.anthropic = AsyncAnthropic()
+    app.state.anthropic = AsyncAnthropic(api_key=settings.anthropic_api_key)
 
     logger.info("Startup complete. API is ready.")
     yield

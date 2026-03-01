@@ -32,8 +32,12 @@ class TractPrediction(BaseModel):
 
 
 class RankedTract(BaseModel):
-    """Single row in PRED-02 ranked response — same shape as TractPrediction."""
+    """Single row in PRED-02 ranked response — includes city_name and tree coverage for sidebar."""
     tract_id: str
     xgb_heat_score: float
     xgb_risk_score: float
     tf_risk_score: float
+    city_name: str | None = None
+    mean_tree_cov: float | None = None
+    mean_imperv: float | None = None
+    mean_afternoon_temp: float | None = None

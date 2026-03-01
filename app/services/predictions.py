@@ -48,9 +48,11 @@ def get_ranked_predictions(
     cursor = db.cursor()
     # Both sort_by.value and order.value are validated Enum values — safe to interpolate
     rows = cursor.execute(f"""
-        SELECT tract_id, xgb_heat_score, xgb_risk_score, tf_risk_score
-        FROM tract_outputs_with_preds
-        ORDER BY {sort_by.value} {order.value}
+        SELECT p.tract_id, p.xgb_heat_score, p.xgb_risk_score, p.tf_risk_score,
+               f.city_name, f.mean_tree_cov, f.mean_imperv, f.mean_afternoon_temp
+        FROM tract_outputs_with_preds p
+        LEFT JOIN tract_features f ON p.tract_id = f.tract_id
+        ORDER BY p.{sort_by.value} {order.value}
         LIMIT ?
     """, [limit]).fetchall()
 
@@ -60,6 +62,10 @@ def get_ranked_predictions(
             "xgb_heat_score": row[1],
             "xgb_risk_score": row[2],
             "tf_risk_score": row[3],
+            "city_name": row[4],
+            "mean_tree_cov": row[5],
+            "mean_imperv": row[6],
+            "mean_afternoon_temp": row[7],
         }
         for row in rows
     ]
