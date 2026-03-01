@@ -4,6 +4,8 @@ import type { MapRef, MapLayerMouseEvent, LayerProps } from 'react-map-gl/maplib
 import { useMapStore, useShallow } from '../../store/mapStore'
 import { CountyBorderLayer } from './CountyBorderLayer'
 import { TractPopup } from './TractPopup'
+import { MapFloatingCard } from './MapFloatingCard'
+import { TimelineSlider } from './TimelineSlider'
 
 // CRITICAL: Layer style objects defined OUTSIDE component — stable references
 const tractFillLayer: LayerProps = {
@@ -166,6 +168,10 @@ export function HeatMap() {
           />
         )}
       </Map>
+
+      {/* Floating UI elements — positioned over map */}
+      <MapFloatingCard />
+      <TimelineSlider />
 
       {/* Loading overlay */}
       {isMapLoading && (

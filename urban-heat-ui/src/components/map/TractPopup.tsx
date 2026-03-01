@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { Popup } from 'react-map-gl/maplibre'
 import type { PopupInfo } from '../../types/map'
 
@@ -37,7 +38,11 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
       offset={12}
       style={{ maxWidth: '280px' }}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 4 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 4 }}
+        transition={{ duration: 0.15 }}
         style={{
           background: 'rgba(18, 18, 26, 0.95)',
           backdropFilter: 'blur(12px)',
@@ -108,7 +113,7 @@ export function TractPopup({ popupInfo, onClose }: TractPopupProps) {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </Popup>
   )
 }
