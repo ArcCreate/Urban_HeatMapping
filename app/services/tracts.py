@@ -137,6 +137,52 @@ def get_tract_geometry(db: duckdb.DuckDBPyConnection, tract_id: str) -> dict | N
     }
 
 
+def get_tracts_by_city(db: duckdb.DuckDBPyConnection, city_name: str) -> list[dict]:
+    """
+    Return compact data for every tract in a named city.
+    Used to give the chat model a full picture of all tracts in the selected city,
+    so it can reference any tract — not just the currently selected one.
+    """
+    cursor = db.cursor()
+    rows = cursor.execute("""
+        SELECT
+            tf.tract_id,
+            top.xgb_heat_score,
+            top.xgb_risk_score,
+            top.tf_risk_score,
+            tf.mean_afternoon_temp,
+            tf.mean_tree_cov,
+            tf.mean_imperv,
+            tf.mean_svi_overall,
+            tf.mean_life_expectancy,
+            tf.mean_poverty2x,
+            tf.mean_cvd_rate,
+            tf.mean_disability
+        FROM tract_features tf
+        JOIN tract_outputs_with_preds top ON tf.tract_id = top.tract_id
+        WHERE tf.city_name = ?
+        ORDER BY top.xgb_heat_score DESC
+    """, [city_name]).fetchall()
+
+    return [
+        {
+            "tract_id": r[0],
+            "xgb_heat_score": float(r[1]),
+            "xgb_risk_score": float(r[2]),
+            "tf_risk_score": float(r[3]),
+            "mean_afternoon_temp": float(r[4]) if r[4] is not None else None,
+            "mean_tree_cov": float(r[5]) if r[5] is not None else None,
+            "mean_imperv": float(r[6]) if r[6] is not None else None,
+            "mean_svi_overall": float(r[7]) if r[7] is not None else None,
+            "mean_life_expectancy": float(r[8]) if r[8] is not None else None,
+            "mean_poverty2x": float(r[9]) if r[9] is not None else None,
+            "mean_cvd_rate": float(r[10]) if r[10] is not None else None,
+            "mean_disability": float(r[11]) if r[11] is not None else None,
+        }
+        for r in rows
+    ]
+
+
 def get_batch_tracts(db: duckdb.DuckDBPyConnection, tract_ids: list[str]) -> list[dict]:
     """
     BATCH-01: Return full TractDetail for each ID in tract_ids.
