@@ -1,9 +1,9 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.0
-milestone_name: milestone
-status: unknown
-last_updated: "2026-03-01T00:58:31.047Z"
+milestone_name: MVP
+status: milestone_complete
+last_updated: "2026-03-01T01:18:29.879Z"
 progress:
   total_phases: 4
   completed_phases: 4
@@ -15,17 +15,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-28)
+See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Core value:** City planners can explore where heat risk is highest across King County tracts, simulate the impact of interventions, and get AI-assisted reasoning — all through a fast, queryable JSON API.
-**Current focus:** Phase 4 — Chat Endpoint (COMPLETE)
+**Current focus:** Planning next milestone (v1.1) — run `/gsd:new-milestone`
 
 ## Current Position
 
-Phase: 4 of 4 (Chat Endpoint) — COMPLETE
-Plan: 1 of 1 in current phase — COMPLETE
-Status: Phase 4 complete — POST /api/v1/chat wired with AsyncAnthropic, 8 tests passing, CHAT-01 fulfilled
-Last activity: 2026-03-01 — Completed 04-01: chat schemas, service, async router, 8 integration tests (CHAT-01)
+Phase: v1.0 SHIPPED — all 4 phases complete
+Plan: 10/10 plans complete
+Status: v1.0 MVP archived. Full API operational: health, tracts, blocks, predictions, summary, batch, simulations, chat.
+Last activity: 2026-03-01 — v1.0 MVP milestone archived; RETROSPECTIVE.md written; tagged v1.0
 
 Progress: [██████████] 100%
 
@@ -103,13 +103,10 @@ None.
 
 ### Blockers/Concerns
 
-- Python 3.12 env at `/opt/anaconda3/envs/urban-heatmap/` confirmed working (Plan 02 tests passed). pytest installed.
-- [RESOLVED 03-01] Phase 3 (Simulation): Parametric formula coefficients sourced and implemented — BETA_CANOPY=0.04, BETA_ALBEDO=5.4, BETA_GREEN_SPACE=5.0e-6 with literature citations.
-- [RESOLVED 02-01] Phase 2 (Geometry): `king_county.duckdb` geometry CRS and actual table/column names verified — all 492 tracts and 25,552 blocks match, WGS84, tables are tract_features/tract_outputs_with_preds/blocks.
-- [RESOLVED 04-01] Phase 4 (Chat): claude-haiku-4-5-20251001 selected; token budget strategy implemented (enumerate <= 50 / summarize > 50).
+None — all v1.0 blockers resolved. See PROJECT.md Known Issues for tech debt items carried forward.
 
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 04-01-PLAN.md — Chat endpoint (POST /api/v1/chat), 8 tests, CHAT-01; Phase 4 complete. API v1 feature set complete.
-Resume file: None
+Stopped at: v1.0 MVP milestone complete — archived to .planning/milestones/, tagged v1.0, retrospective written.
+Resume file: None — start fresh with /gsd:new-milestone for v1.1

@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 02-data-endpoints
 source: 02-01-SUMMARY.md, 02-02-SUMMARY.md, 02-03-SUMMARY.md, 02-04-SUMMARY.md, 02-05-SUMMARY.md
 started: 2026-02-28T23:40:00Z
@@ -102,7 +102,11 @@ skipped: 1
   reason: "User reported: curl returns HTTP 404 {\"error\": \"HTTPException\", \"detail\": \"Not Found\", \"status_code\": 404}"
   severity: major
   test: 6
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "app/main.py never imports or registers blocks.router — include_router call was left commented out with a TODO. The blocks router, service, and DuckDB table are all fully implemented."
+  artifacts:
+    - path: "app/main.py"
+      issue: "blocks not in import on line 16; app.include_router(blocks.router, ...) commented out on line 120"
+  missing:
+    - "Add blocks to import: from app.routers import health, tracts, predictions, summary, blocks"
+    - "Uncomment: app.include_router(blocks.router, prefix=\"/api/v1\")"
+  debug_session: ".planning/debug/blocks-404-tract-id.md"
